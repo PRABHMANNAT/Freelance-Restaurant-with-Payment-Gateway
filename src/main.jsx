@@ -1529,7 +1529,8 @@ function Checkout({
     </section>
   );
 }
-function Confirmation({ order: o, navigate }) {
+function Confirmation({ order: o, navigate, onUpdateOrder }) {
+  const [copyFeedback, setCopyFeedback] = useState("");
   if (!o)
     return (
       <section className="section empty-state">
@@ -1542,74 +1543,60 @@ function Confirmation({ order: o, navigate }) {
         </button>
       </section>
     );
+  const stages = ["Received", "Preparing", "Ready", "Delivered"];
+  const activeStage = o.deliveryStatus
+    ? stages.indexOf(o.deliveryStatus.split(" — ")[0])
+    : -1;
+  async function copyReference() {
+    try {
+      await navigator.clipboard.writeText(o.id);
+      setCopyFeedback("Order reference copied.");
+    } catch {
+      setCopyFeedback("Copy is unavailable in this browser.");
+    }
+  }
   return (
     <section className="section confirmation">
-      <div className="confirmation-intro">
-        <span className="success-icon">
-          <Check size={35} />
-        </span>
-        <Eyebrow>A LITTLE HAPPINESS IS ON ITS WAY</Eyebrow>
-        <h1 tabIndex={-1}>
-          Thank you, <em>{o.customer.name.split(" ")[0]}.</em>
-        </h1>
-        <p>Payment status is shown below. This demo has not contacted the restaurant or sent a notification.</p>
-        <div className="confirmation-id">
-          {o.id}
-          <span>{o.paymentStatus}</span>
-        </div>
-        <div className="estimate">
-          <Truck size={23} />
-          <div>
-            <strong>35–45 minutes</strong>
-            <small>Illustrative demo delivery estimate</small>
-          </div>
-        </div>
+      <div className="confirmation-heading">
+        <h1 tabIndex={-1}>Demo order confirmed</h1>
+        <p>Nothing was charged, sent to the restaurant, or shared outside this browser.</p>
       </div>
-      <div className="confirmation-grid">
+      <article className="receipt" aria-label={`Demo order receipt ${o.id}`}>
+        <div className="receipt-status"><Check size={17} /> Demo order snapshot</div>
+        <div className="receipt-key">
+          <div><span>Order reference</span><strong>{o.id}</strong></div>
+          <div><span>Payment</span><strong>{o.paymentStatus}</strong></div>
+          <div><span>Total</span><strong>{money(o.total)}</strong></div>
+        </div>
+        <div className="receipt-actions">
+          <button className="text-button" onClick={() => document.getElementById("order-details")?.scrollIntoView({ behavior: "smooth" })}>View order</button>
+          <button className="text-button" onClick={copyReference}>Copy order reference</button>
+          <button className="text-button" onClick={() => navigate("menu")}>Back to menu</button>
+        </div>
+        <p className="copy-feedback" role="status" aria-live="polite">{copyFeedback}</p>
+      </article>
+      {activeStage >= 0 && (
+        <ol className="order-progress" aria-label="Simulated order progress">
+          {stages.map((stage, index) => <li className={index <= activeStage ? "active" : ""} key={stage}>{stage}</li>)}
+        </ol>
+      )}
+      <div className="confirmation-grid" id="order-details">
         <div className="confirmation-details">
-          <h3>The details, all in one place.</h3>
-          <div>
-            <MapPin />
-            <section>
-              <strong>Delivering to {o.customer.name}</strong>
-              <p>
-                {o.customer.address}, {o.customer.locality ? `${o.customer.locality}, ` : ""}{o.customer.pincode}
-              </p>
-              <p>{o.customer.phone}</p>
-            </section>
-          </div>
-          <div>
-            <CreditCard />
-            <section>
-              <strong>
-                {o.method === "COD" ? "Cash on Delivery" : o.method}
-              </strong>
-              <p>{o.paymentStatus}</p>
-            </section>
-          </div>
-          {o.customer.instructions && (
-            <div>
-              <MessageCircle />
-              <section>
-                <strong>A note for the kitchen</strong>
-                <p>{o.customer.instructions}</p>
-              </section>
-            </div>
-          )}
-          <p className="demo-note">
-            Demo only. No restaurant order was sent, no messages were sent, and
-            no money was charged.
-          </p>
+          <h3>Delivery details</h3>
+          <div><MapPin /><section><strong>Delivering to {o.customer.name}</strong><p>{o.customer.address}, {o.customer.locality ? `${o.customer.locality}, ` : ""}{o.customer.pincode}</p><p>{o.customer.phone}</p></section></div>
+          {o.customer.instructions && <div><MessageCircle /><section><strong>Kitchen note</strong><p>{o.customer.instructions}</p></section></div>}
+          <div className="estimate"><Truck size={20} /><section><strong>{o.estimate}</strong><p>Illustrative delivery estimate only.</p></section></div>
         </div>
         <OrderSummary items={o.items} totals={o} />
       </div>
+      <details className="confirmation-demo-controls">
+        <summary>Demo controls</summary>
+        <p>Simulate fulfilment locally. These statuses do not represent restaurant acceptance.</p>
+        <div>{stages.map((stage) => <button key={stage} onClick={() => onUpdateOrder(o.id, { deliveryStatus: `${stage} — simulated`, fulfilmentStatus: `${stage} — simulated` })}>Simulate {stage.toLowerCase()}</button>)}</div>
+      </details>
       <div className="confirmation-actions">
-        <button className="button" onClick={() => navigate("menu")}>
-          Continue Browsing <ArrowRight size={18} />
-        </button>
-        <button className="button outline" onClick={() => navigate("reviews")}>
-          <Star size={18} /> Leave a Review
-        </button>
+        <button className="button outline" onClick={() => navigate("menu")}>Back to menu</button>
+        {o.deliveryStatus === "Delivered — simulated" && <button className="button" onClick={() => navigate("reviews")}>How was your meal? <ArrowRight size={18} /></button>}
       </div>
     </section>
   );
