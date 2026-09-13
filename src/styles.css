@@ -219,10 +219,10 @@ button:active {
   background: currentColor;
 }
 .announcement {
-  height: 33px;
-  background: #343b26;
-  color: #f8f7ea;
-  padding: 0 5.6%;
+  height: 28px;
+  background: var(--dark);
+  color: #f5f1e7;
+  padding: 0 max(20px, calc((100% - var(--content-width)) / 2));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -241,17 +241,14 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(1240px, calc(100% - 48px));
-  margin: 15px auto 0;
-  padding: 15px 22px;
-  gap: 25px;
-  border: 1px solid #e4e4d7;
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--cream) 92%, transparent);
-  box-shadow: 0 14px 38px rgba(41, 47, 29, 0.1);
-  backdrop-filter: blur(18px);
+  width: 100%;
+  min-height: 80px;
+  padding: 14px max(20px, calc((100% - var(--content-width)) / 2));
+  gap: 32px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--cream) 96%, transparent);
   position: sticky;
-  top: 14px;
+  top: 0;
   z-index: 30;
 }
 .brand {
@@ -261,22 +258,22 @@ button:active {
   flex-shrink: 0;
 }
 .brand img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  border-radius: 0;
   object-fit: cover;
 }
 .brand > span {
   font-family: var(--serif);
   font-weight: 600;
-  font-size: 19px;
-  letter-spacing: 1.1px;
+  font-size: 18px;
+  letter-spacing: 0.035em;
   line-height: 1.3;
 }
 .brand small {
   display: block;
   font-family: "DM Sans", sans-serif;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 500;
   letter-spacing: 1.65px;
   margin-top: 5px;
@@ -284,38 +281,37 @@ button:active {
 .nav {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px;
-  border: 1px solid #e4e6d8;
-  border-radius: 999px;
-  background: #f3f4eb;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.045em;
+  gap: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 .nav a {
-  padding: 9px 12px;
-  border-radius: 999px;
+  padding: 10px 0;
   position: relative;
   white-space: nowrap;
 }
 .nav a[aria-current="page"] {
-  color: #fffef4;
+  color: var(--dark);
   font-weight: 600;
-  background: var(--olive);
-  box-shadow: 0 5px 10px rgba(80, 91, 34, 0.18);
 }
 .nav a[aria-current="page"]:after {
-  display: none;
+  display: block;
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 1px;
+  background: var(--olive);
 }
 .nav a:hover {
   color: var(--olive);
-  background: #e7ead7;
 }
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
 .cart-trigger {
   display: flex;
@@ -327,7 +323,7 @@ button:active {
   font-size: 10px;
   font-weight: 500;
   border-radius: 50%;
-  background: #e9eadc;
+  background: #e4e7d5;
   min-width: 19px;
   height: 19px;
   display: grid;
