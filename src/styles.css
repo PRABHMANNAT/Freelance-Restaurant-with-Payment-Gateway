@@ -29,6 +29,9 @@
 }
 body {
   margin: 0;
+  color: var(--ink);
+  background: var(--cream);
+  font-size: 16px;
 }
 button,
 a,
@@ -82,9 +85,9 @@ figure {
 h1,
 h2 {
   font-family: var(--serif);
-  font-weight: 400;
-  letter-spacing: -1.8px;
-  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
 }
 h1 {
   font-size: 64px;
@@ -98,7 +101,7 @@ h3 {
 }
 em {
   font-family: var(--serif);
-  font-weight: 400;
+  font-weight: 600;
   color: var(--olive);
 }
 p {
@@ -113,7 +116,7 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid #aaa642;
+  outline: 3px solid #596438;
   outline-offset: 4px;
 }
 button,
@@ -131,28 +134,27 @@ button:active {
   align-items: center;
   justify-content: center;
   gap: 13px;
-  border: 1px solid #596020;
-  background: #5e6622;
-  color: #fffef5;
-  padding: 15px 23px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.035em;
+  border: 1px solid var(--dark);
+  background: var(--dark);
+  color: var(--surface);
+  padding: 13px 20px;
+  border-radius: var(--radius-button);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   min-height: 50px;
-  box-shadow: 0 9px 17px rgba(71, 80, 21, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  box-shadow: none;
 }
 .button:hover {
-  background: #484f15;
-  border-color: #484f15;
-  box-shadow: 0 12px 23px rgba(71, 80, 21, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  transform: translateY(-2px);
+  background: #1c2c1f;
+  border-color: #1c2c1f;
+  transform: translateY(-1px);
 }
 .button.small {
-  padding: 10px 17px 10px 19px;
-  min-height: 40px;
-  gap: 11px;
-  font-size: 11px;
+  padding: 10px 15px;
+  min-height: 44px;
+  gap: 8px;
+  font-size: 14px;
 }
 .button.cream {
   background: var(--cream);
@@ -175,7 +177,7 @@ button:active {
   align-items: center;
   gap: 10px;
   color: var(--olive);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   min-height: 40px;
 }
