@@ -60,3 +60,10 @@ Checked on 14 September 2026 using the refreshed local Vite app.
 - The menu remains a 16-item demonstration dataset. Its dish names, descriptions, prices, images and Pizza/Pasta categorisation still await owner confirmation; the UI does not infer allergens, egg-free status, no-onion/no-garlic preparation, spice levels, portions or modifiers.
 - Search clearing was reproduced through the visible clear button. The revised input also clears on Escape; neither path resets selected category or diet, so valid filter intersections are preserved. The visible reset action clears all three controls only in the no-results state.
 - Mobile menu cards are compact horizontal rows with a 112 px image and a 44 px Add/quantity action. The existing mobile cart summary remains fixed above the safe-area region and reads item count, subtotal and View cart.
+
+## Cart and checkout revision
+
+- The cart remains a named modal dialog with a focus trap, Escape and close controls, inert background content, focus restoration, scrollable lines and an anchored total/checkout footer. The backdrop now dims without blur.
+- Delivery is configured in `src/domain.js`: ₹40 below a ₹799 subtotal and free from ₹799. Deterministic tests cover ₹330 (Dal ₹260 + naan ₹70) = ₹370 total, plus ₹798, ₹799 and ₹800 threshold values.
+- Serviceability is now checked against clearly marked sample demo pincodes 143001 and 143002. A valid six-digit pincode outside those areas has an adjacent field error and does not advance to payment.
+- Checkout groups contact, address and kitchen-instruction fields. All test data remains fictional. Valid customer input persists in browser storage through errors, payment back-navigation and cart editing.
