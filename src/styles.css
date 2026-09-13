@@ -578,14 +578,29 @@ button:active {
 }
 .food-tag {
   position: absolute;
-  left: 13px;
-  top: 13px;
-  background: #fffdf1ed;
-  border-radius: 4px;
-  color: #53562b;
-  font-size: 10px;
-  font-weight: 500;
-  padding: 5px 9px;
+  left: 14px;
+  top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #262f1c;
+  border: 1px solid rgba(255,255,235,.25);
+  border-radius: 999px;
+  box-shadow: 0 5px 16px rgba(20,24,13,.28);
+  color: #fffde9;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 7px 11px;
+}
+.food-tag:before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e1dc77;
+  box-shadow: 0 0 0 3px rgba(225,220,119,.17);
 }
 .diet-mark {
   position: absolute;
