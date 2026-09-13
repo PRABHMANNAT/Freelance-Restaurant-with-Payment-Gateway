@@ -1223,8 +1223,8 @@ function Checkout({
   const [step, setStep] = useState(1),
     [errors, setErrors] = useState({}),
     [method, setMethod] = useState("COD"),
-    [processing, setProcessing] = useState(false),
-    [failure, setFailure] = useState(false);
+    [paymentState, setPaymentState] = useState("idle");
+  const processing = paymentState === "processing";
   const locked = useRef(false),
     timer = useRef(),
     orderId = useRef(
@@ -1246,7 +1246,7 @@ function Checkout({
     setStep(2);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-  function pay(success) {
+  function pay(outcome = "succeeded") {
     if (locked.current || !items.length) return;
     const errs = validateCustomer(customer);
     if (Object.keys(errs).length) {
@@ -1254,18 +1254,22 @@ function Checkout({
       setStep(1);
       return;
     }
+    const snapshot = createOrder(items, customer, method, orderId.current);
     locked.current = true;
-    setProcessing(true);
-    setFailure(false);
+    setPaymentState("processing");
     timer.current = setTimeout(() => {
-      if (!success) {
-        setFailure(true);
-        setProcessing(false);
+      if (outcome !== "succeeded") {
+        setPaymentState(outcome);
         locked.current = false;
         return;
       }
-      onComplete(createOrder(items, customer, method, orderId.current));
-    }, 1400);
+      setPaymentState("succeeded");
+      onComplete(snapshot);
+    }, 1100);
+  }
+  function chooseAnotherMethod() {
+    locked.current = false;
+    setPaymentState("idle");
   }
   if (!items.length)
     return (
@@ -1362,7 +1366,7 @@ function Checkout({
             </form>
           ) : (
             <>
-              <h2>A little closer to delicious.</h2>
+              <h2>Choose how to pay</h2>
               <p className="muted">
                 Choose how you’d like to pay in this demo.
               </p>
@@ -1411,7 +1415,7 @@ function Checkout({
                       checked={method === value}
                       onChange={() => {
                         setMethod(value);
-                        setFailure(false);
+                        chooseAnotherMethod();
                       }}
                     />
                     <Icon size={24} />
@@ -1463,23 +1467,23 @@ function Checkout({
               <div className="payment-disclaimer">
                 <ShieldCheck size={19} />
                 <p>
-                  This is a demonstration.{" "}
-                  <strong>No money will be charged.</strong>
+                  <strong>Demo — no money will be charged.</strong>
                 </p>
               </div>
-              {failure && (
-                <div className="payment-error" role="alert">
-                  <strong>Simulated payment failed.</strong>
-                  <p>
-                    Your bag and delivery details are safe. Retry below or
-                    choose another method.
-                  </p>
+              {paymentState !== "idle" && paymentState !== "processing" && paymentState !== "succeeded" && (
+                <div className={`payment-outcome ${paymentState}`} role="status">
+                  <strong>{paymentState === "failed" ? "Simulated payment failed." : paymentState === "cancelled" ? "Simulated payment cancelled." : "Simulated payment is pending."}</strong>
+                  <p>{paymentState === "pending" ? "No paid confirmation or order has been created. Retry or choose another method." : "Your cart, delivery details and kitchen notes are still here."}</p>
+                  <div>
+                    <button className="button outline" onClick={() => pay("succeeded")}>Retry</button>
+                    <button className="text-button" onClick={chooseAnotherMethod}>Choose another method</button>
+                  </div>
                 </div>
               )}
               <button
                 disabled={processing}
                 className="button full"
-                onClick={() => pay(true)}
+                onClick={() => pay("succeeded")}
               >
                 {processing ? (
                   <>
@@ -1495,24 +1499,20 @@ function Checkout({
                   </>
                 ) : (
                   <>
-                    Simulate Successful Payment <ArrowRight size={18} />
+                    Simulate payment · {money(totals.total)} <ArrowRight size={18} />
                   </>
                 )}
               </button>
-              {method !== "COD" && (
-                <button
-                  disabled={processing}
-                  className="text-button failure-button"
-                  onClick={() => pay(false)}
-                >
-                  Simulate payment failure
-                </button>
-              )}
-              <p className="demo-note centered">
-                {method === "COD"
-                  ? "Payment will be marked “Pending — COD.”"
-                  : "A successful simulation places your demo order automatically."}
-              </p>
+              <details className="demo-controls">
+                <summary>Demo controls</summary>
+                <p>Run a non-successful test outcome. It keeps your cart and does not create an order.</p>
+                <div>
+                  <button type="button" disabled={processing} onClick={() => pay("failed")}>Simulate failure</button>
+                  <button type="button" disabled={processing} onClick={() => pay("cancelled")}>Simulate cancellation</button>
+                  <button type="button" disabled={processing} onClick={() => pay("pending")}>Simulate pending</button>
+                </div>
+              </details>
+              <p className="demo-note centered">{method === "COD" ? "Cash on Delivery remains unpaid and will be marked “Pending — COD.”" : "A successful simulation records payment only; restaurant acceptance and notifications remain simulated."}</p>
             </>
           )}
         </div>
