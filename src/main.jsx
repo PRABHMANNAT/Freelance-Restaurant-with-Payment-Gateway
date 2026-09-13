@@ -415,7 +415,6 @@ function Home(props) {
       <section className="section favourites">
         <div className="section-heading">
           <div>
-            <Eyebrow>FROM OUR KITCHEN</Eyebrow>
             <h2>
               Come hungry. <em>Leave happy.</em>
             </h2>
