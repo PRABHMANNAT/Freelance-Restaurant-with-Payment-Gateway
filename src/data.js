@@ -27,6 +27,14 @@ export const restaurant = {
     demoDisclosure:
       "Demo content only. Please verify restaurant details before publishing.",
   },
+  about: {
+    interimIntroduction:
+      "Kale Da Dhaba brings Punjabi favourites to the table in Amritsar. The restaurant’s history and kitchen details are being confirmed with the owner.",
+    factualHistory: null,
+    ownerQuote: null,
+  },
+  menuDisclosure:
+    "Demo menu: dish names, descriptions, prices and photography await owner verification.",
   story:
     "From comforting Punjabi classics to the joy of sharing a meal, Kale Da Dhaba is about food that brings people together. Rich gravies, warm breads, and a generous helping of hospitality — there’s always a little more love at our table.",
   storyNote:

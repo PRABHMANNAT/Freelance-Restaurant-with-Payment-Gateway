@@ -8,6 +8,6 @@ The public logo was downloaded and saved as `public/assets/brand-logo.jpg`. User
 
 Google Images was also visited for “Kale Da Dhaba Amritsar food”. Results included Swiggy and Zomato, but no unverified location, phone, hours, review statistics, or current menu prices were adopted.
 
-Verified source facts used: brand name, profile monogram, Instagram handle, tagline, since-1994 bio, service types, broad Punjabi identity. All extended story text is editable demo copy. Contact details remain explicit placeholders. Menu items and prices are samples with illustrative imagery. Sample testimonials are visibly labelled.
+Public-source facts used: brand name, profile monogram, Instagram handle, tagline, service types, broad Punjabi identity, and the profile's since-1994 bio. The founding-year statement is **not owner-verified** in this demo and must not be presented as restaurant history until the owner confirms it. All extended story text is editable demo copy. Contact details remain explicit placeholders. Menu items, descriptions, prices and photography are samples with illustrative imagery. Sample testimonials are visibly labelled.
 
 Additional rice, biryani, and dessert illustrations are credited in `public/credits.html`; they are not claimed as photographs of this restaurant. Fonts are DM Sans and Playfair Display from Google Fonts, self-hosted with OFL licenses.

@@ -35,7 +35,9 @@ The requested `Kale_Da_Dhaba_Audit_and_Codex_Prompts.md` attachment was not pres
 ### Awaiting owner verification
 
 - Address, telephone number and opening hours.
-- Founding-year claim, production menu, pricing, delivery rules and testimonials.
+- Founding-year claim: `Since 1994` was observed in the public Instagram bio but is not owner-verified in this project.
+- Production menu, dish descriptions, pricing, delivery rules and testimonials.
+- Restaurant history, team/kitchen/frontage imagery and any attributed owner quote.
 - Whether a silent kitchen/serving video and any watermarked photography are approved for this use.
 
 ### Implement now
