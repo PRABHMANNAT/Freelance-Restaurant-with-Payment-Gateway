@@ -370,6 +370,12 @@ function Home(props) {
             fetchPriority="high"
           />
           <div className="image-shade" />
+          <div className="hero-motion" aria-hidden="true">
+            <span className="motion-ring ring-one" />
+            <span className="motion-ring ring-two" />
+            <span className="motion-spark spark-one" />
+            <span className="motion-spark spark-two" />
+          </div>
           <span className="hero-photo-label">
             THE GOOD STUFF, FRESH FROM OUR KITCHEN
           </span>

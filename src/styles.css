@@ -413,11 +413,20 @@ button:active {
   position: absolute;
   object-fit: cover;
   object-position: center 57%;
+  animation: hero-breathe 12s ease-in-out infinite alternate;
 }
 .image-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #00000018, transparent 35%, #17190dc9);
+  background: linear-gradient(180deg, #18200d3d, transparent 38%, #101508cf);
+}
+.hero-motion { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.motion-ring { position: absolute; display: block; width: 260px; height: 260px; border: 1px solid rgba(255,255,239,.46); border-radius: 50%; }
+.ring-one { top: 8%; right: -110px; animation: orbit-drift 9s ease-in-out infinite; }
+.ring-two { bottom: 6%; left: -135px; width: 300px; height: 300px; border-color: rgba(213,219,148,.42); animation: orbit-drift 11s ease-in-out infinite reverse; }
+.motion-spark { position: absolute; width: 7px; height: 7px; display: block; border-radius: 50%; background: #fbf7c2; box-shadow: 0 0 18px 7px rgba(255,244,174,.35); animation: spark-float 6s ease-in-out infinite; }
+.spark-one { top: 23%; left: 26%; }
+.spark-two { bottom: 33%; right: 18%; animation-delay: -3s; }
 }
 .hero-photo-label {
   position: absolute;
@@ -2102,6 +2111,9 @@ td button {
     transform: rotate(360deg);
   }
 }
+@keyframes hero-breathe { from { transform: scale(1.01); } to { transform: scale(1.075); } }
+@keyframes orbit-drift { 0%,100% { transform: translate3d(0,0,0) rotate(0); } 50% { transform: translate3d(-18px,14px,0) rotate(14deg); } }
+@keyframes spark-float { 0%,100% { opacity:.15; transform: translateY(8px) scale(.8); } 50% { opacity:1; transform: translateY(-18px) scale(1); } }
 @media (min-width: 1500px) {
   .hero {
     min-height: 700px;
