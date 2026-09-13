@@ -1174,10 +1174,13 @@ function Totals({ totals }) {
     </div>
   );
 }
-function OrderSummary({ items, totals }) {
+function OrderSummary({ items, totals, onEditCart }) {
   return (
     <aside className="order-summary">
-      <h3>Your delicious lineup</h3>
+      <div className="summary-heading">
+        <h3>Your order</h3>
+        {onEditCart && <button className="text-button" onClick={onEditCart}>Edit cart</button>}
+      </div>
       {items.map((i) => (
         <div className="summary-item" key={i.id}>
           <Image src={i.image} alt={i.name} />
@@ -1263,26 +1266,10 @@ function Checkout({
         </button>
       </section>
     );
-  const fields = [
-    ["name", "Full name", "text", true, "Your full name"],
-    ["phone", "Phone number", "tel", true, "10-digit mobile number"],
-    ["alternate", "Alternate phone number", "tel", false, "Optional"],
-    ["email", "Email address", "email", false, "Optional"],
-    [
-      "address",
-      "Delivery address",
-      "textarea",
-      true,
-      "House number, street, landmark, and city",
-    ],
-    ["pincode", "Pincode", "text", true, "6-digit pincode"],
-    [
-      "instructions",
-      "Special instructions",
-      "textarea",
-      false,
-      "Anything we should know?",
-    ],
+  const fieldGroups = [
+    { title: "Contact details", fields: [["name", "Full name", "text", true, "Your full name", "name"], ["phone", "Phone number", "tel", true, "10-digit mobile number", "tel"], ["alternate", "Alternate phone", "tel", false, "Optional", "tel"], ["email", "Email address", "email", false, "Optional", "email"]] },
+    { title: "Address", fields: [["address", "House and street", "textarea", true, "House number and street", "street-address"], ["locality", "Locality and city", "text", true, "Locality, city", "address-level2"], ["pincode", "Pincode", "text", true, "6-digit pincode", "postal-code"], ["landmark", "Landmark", "text", false, "Optional", ""]] },
+    { title: "Kitchen instructions", fields: [["instructions", "Instructions", "textarea", false, "Anything we should know?", ""]] },
   ];
   return (
     <section className="section checkout-page">
@@ -1295,20 +1282,17 @@ function Checkout({
         {step === 2 ? "Back to delivery details" : "Back to menu"}
       </button>
       <div className="checkout-title">
-        <Eyebrow>ALMOST AT YOUR DOOR</Eyebrow>
-        <h1 tabIndex={-1}>
-          Good food is <em>on the way.</em>
-        </h1>
+        <h1 tabIndex={-1}>Delivery details</h1>
       </div>
       <ol className="steps">
         <li className="active">
-          <span>{step === 2 ? <Check size={16} /> : 1}</span>Delivery details
+          <span>{step === 2 ? <Check size={16} /> : 1}</span>Details
         </li>
         <li className={step === 2 ? "active" : ""}>
           <span>2</span>Payment
         </li>
         <li>
-          <span>3</span>A happy table
+          <span>3</span>Confirmation
         </li>
       </ol>
       <div className="checkout-grid">
@@ -1328,74 +1312,25 @@ function Checkout({
                   Fill Sample Details
                 </button>
               </div>
-              <p className="muted">
-                Use fictional details for this demo. * Required fields.
-              </p>
-              <div className="form-grid">
-                {fields.map(([key, label, type, required, placeholder]) => (
-                  <label
-                    className={type === "textarea" ? "wide" : ""}
-                    key={key}
-                    htmlFor={`field-${key}`}
-                  >
-                    {label}{" "}
-                    {required ? (
-                      <span className="required">*</span>
-                    ) : (
-                      <span className="optional">(optional)</span>
-                    )}
-                    {type === "textarea" ? (
-                      <textarea
-                        id={`field-${key}`}
-                        value={customer[key]}
-                        required={required}
-                        placeholder={placeholder}
-                        maxLength={500}
-                        onChange={(e) =>
-                          setCustomer({ ...customer, [key]: e.target.value })
-                        }
-                        aria-invalid={!!errors[key]}
-                        aria-describedby={
-                          errors[key] ? `error-${key}` : undefined
-                        }
-                      />
-                    ) : (
-                      <input
-                        id={`field-${key}`}
-                        value={customer[key]}
-                        type={type}
-                        required={required}
-                        placeholder={placeholder}
-                        inputMode={
-                          ["phone", "alternate", "pincode"].includes(key)
-                            ? "numeric"
-                            : undefined
-                        }
-                        maxLength={
-                          ["phone", "alternate"].includes(key)
-                            ? 10
-                            : key === "pincode"
-                              ? 6
-                              : 120
-                        }
-                        autoComplete="off"
-                        onChange={(e) =>
-                          setCustomer({ ...customer, [key]: e.target.value })
-                        }
-                        aria-invalid={!!errors[key]}
-                        aria-describedby={
-                          errors[key] ? `error-${key}` : undefined
-                        }
-                      />
-                    )}{" "}
-                    {errors[key] && (
-                      <span id={`error-${key}`} className="error">
-                        {errors[key]}
-                      </span>
-                    )}
-                  </label>
-                ))}
-              </div>
+              <p className="muted">Use fictional details for this demo. * Required fields. Delivery is available to sample pincodes {Object.keys(deliveryConfig.serviceablePincodes).join(" and ")}.</p>
+              {fieldGroups.map((group) => (
+                <fieldset className="checkout-field-group" key={group.title}>
+                  <legend>{group.title}</legend>
+                  <div className="form-grid">
+                    {group.fields.map(([key, label, type, required, placeholder, autoComplete]) => (
+                      <label className={type === "textarea" ? "wide" : ""} key={key} htmlFor={`field-${key}`}>
+                        {label} {required ? <span className="required">*</span> : <span className="optional">(optional)</span>}
+                        {type === "textarea" ? (
+                          <textarea id={`field-${key}`} value={customer[key]} required={required} placeholder={placeholder} maxLength={500} autoComplete={autoComplete} onChange={(e) => setCustomer({ ...customer, [key]: e.target.value })} aria-invalid={!!errors[key]} aria-describedby={errors[key] ? `error-${key}` : undefined} />
+                        ) : (
+                          <input id={`field-${key}`} value={customer[key]} type={type} required={required} placeholder={placeholder} inputMode={["phone", "alternate", "pincode"].includes(key) ? "numeric" : undefined} maxLength={["phone", "alternate"].includes(key) ? 10 : key === "pincode" ? 6 : 120} autoComplete={autoComplete} onChange={(e) => setCustomer({ ...customer, [key]: e.target.value })} aria-invalid={!!errors[key]} aria-describedby={errors[key] ? `error-${key}` : undefined} />
+                        )}
+                        {errors[key] && <span id={`error-${key}`} className="error">{errors[key]}</span>}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              ))}
               <button className="button full">
                 Continue to Payment <ArrowRight size={18} />
               </button>
@@ -1411,7 +1346,7 @@ function Checkout({
                 <div>
                   <strong>{customer.name}</strong>
                   <p>
-                    {customer.address}, {customer.pincode}
+                    {customer.address}, {customer.locality}, {customer.pincode}
                   </p>
                   <small>{customer.phone}</small>
                 </div>
@@ -1556,7 +1491,7 @@ function Checkout({
             </>
           )}
         </div>
-        <OrderSummary items={items} totals={totals} />
+        <OrderSummary items={items} totals={totals} onEditCart={() => navigate("menu")} />
       </div>
     </section>
   );
@@ -1605,7 +1540,7 @@ function Confirmation({ order: o, navigate }) {
             <section>
               <strong>Delivering to {o.customer.name}</strong>
               <p>
-                {o.customer.address}, {o.customer.pincode}
+                {o.customer.address}, {o.customer.locality ? `${o.customer.locality}, ` : ""}{o.customer.pincode}
               </p>
               <p>{o.customer.phone}</p>
             </section>
