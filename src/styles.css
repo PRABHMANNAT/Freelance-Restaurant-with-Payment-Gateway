@@ -4109,6 +4109,59 @@ td button {
   border: 1px solid transparent;
   border-radius: 8px;
 }
+
+/* Gallery only shows supplied food images; each crop is deliberate and reserved. */
+.gallery-intro { padding-bottom: 24px; }
+.gallery-intro h1 { color: var(--dark); font-size: clamp(40px, 5vw, 60px); }
+.gallery-intro p { margin-top: 12px; color: var(--muted); font-size: 16px; }
+.gallery-composition {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-auto-rows: 190px;
+  gap: 14px;
+  padding-top: 18px;
+}
+.gallery-item { position: relative; overflow: hidden; margin: 0; border-radius: 10px; background: var(--cream); }
+.gallery-item-1 { grid-column: span 3; grid-row: span 2; }
+.gallery-item-2, .gallery-item-3 { grid-column: span 1; grid-row: span 2; }
+.gallery-item-4, .gallery-item-6 { grid-column: span 2; }
+.gallery-item-5 { grid-column: span 1; }
+.gallery-item button { display: block; width: 100%; height: 100%; padding: 0; background: transparent; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 180ms ease; }
+.gallery-item button:hover img, .gallery-item button:focus-visible img { transform: scale(1.025); }
+.gallery-item figcaption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 25px 14px 12px;
+  background: linear-gradient(transparent, rgba(23, 31, 25, .66));
+  color: #fff;
+  font-size: 12px;
+  pointer-events: none;
+}
+.gallery-source-note { width: min(1200px, calc(100% - 40px)); margin: -34px auto 64px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.lightbox-backdrop { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: 24px; background: rgba(20, 30, 22, .78); animation: fade-in 160ms ease; }
+.gallery-lightbox { position: relative; width: min(980px, 100%); max-height: calc(100vh - 48px); overflow: hidden; border-radius: 10px; background: var(--dark); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+.gallery-lightbox > img { display: block; width: 100%; max-height: calc(100vh - 130px); object-fit: contain; }
+.lightbox-close, .lightbox-nav { position: absolute; z-index: 1; display: grid; place-items: center; min-width: 44px; min-height: 44px; border-radius: 8px; background: rgba(255,255,255,.93); color: var(--dark); }
+.lightbox-close { top: 12px; right: 12px; }
+.lightbox-nav { top: 50%; transform: translateY(-50%); }
+.lightbox-nav.previous { left: 12px; }
+.lightbox-nav.next { right: 12px; }
+.lightbox-caption { padding: 14px 62px; color: var(--surface); text-align: center; font-size: 14px; }
+@media (max-width: 800px) {
+  .gallery-composition { grid-template-columns: 1fr 1fr; grid-auto-rows: 180px; gap: 10px; padding-inline: 0; }
+  .gallery-item-1, .gallery-item-2, .gallery-item-3, .gallery-item-4, .gallery-item-5, .gallery-item-6 { grid-column: auto; grid-row: auto; }
+  .gallery-item-1 { grid-column: span 2; min-height: 270px; }
+  .gallery-source-note { margin-top: -30px; }
+}
+@media (max-width: 480px) {
+  .gallery-composition { grid-template-columns: 1fr; grid-auto-rows: 230px; }
+  .gallery-item-1 { grid-column: auto; min-height: 270px; }
+  .lightbox-backdrop { padding: 12px; }
+  .gallery-lightbox > img { max-height: calc(100vh - 115px); }
+}
 .rating-picker button[aria-checked="true"] { border-color: var(--olive); background: var(--surface); }
 .rating-picker button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .review-form textarea { min-height: 126px; }
