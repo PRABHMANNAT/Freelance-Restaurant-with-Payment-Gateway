@@ -74,6 +74,22 @@ function Image({ src, alt, ...props }) {
     />
   );
 }
+function CheckoutHeader({ navigate }) {
+  return (
+    <header className="checkout-header">
+      <a href="#home" className="brand" aria-label="Kale Da Dhaba home">
+        <img src={photos.logo} alt="Kale Da Dhaba logo" />
+        <span>KALE DA DHABA<small>{restaurant.tagline}</small></span>
+      </a>
+      <div>
+        <button className="text-button" onClick={() => navigate("menu")}>
+          <ArrowLeft size={17} /> Back to menu
+        </button>
+        <span className="demo-pill">Demo</span>
+      </div>
+    </header>
+  );
+}
 function App() {
   const [saved, setSaved] = useState(readSaved),
     [route, setRoute] = useState(currentRoute),
@@ -182,14 +198,14 @@ function App() {
       >
         Skip to content
       </a>
-      <div className="announcement">
+      {route !== "checkout" && <div className="announcement">
         <span>
           GOOD FOOD. GREAT COMPANY.{" "}
           <span className="announcement-extra">A LITTLE PUNJABI LOVE.</span>
         </span>
         <span className="demo-pill">Demo mode</span>
-      </div>
-      <header className="header">
+      </div>}
+      {route === "checkout" ? <CheckoutHeader navigate={navigate} /> : <header className="header">
         <a href="#home" className="brand" aria-label="Kale Da Dhaba home">
           <img src={photos.logo} alt="Kale Da Dhaba logo" />
           <span>
@@ -243,7 +259,7 @@ function App() {
             {mobileNav ? <X /> : <MenuIcon />}
           </button>
         </div>
-      </header>
+      </header>}
       <main id="main-content" tabIndex={-1}>
         {storageError && (
           <p className="storage-warning" role="alert">
