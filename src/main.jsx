@@ -399,29 +399,22 @@ function Home(props) {
           illustrative.
         </p>
       </section>
-      <section className="home-story">
+      <section className="home-story home-about">
         <div className="story-photo">
           <Image
             src={photos.story}
-            alt="Freshly buttered kulcha served at Kale Da Dhaba"
+            alt="A freshly buttered kulcha ready to be served"
             loading="lazy"
           />
-          <span className="photo-note">Good food. No shortcuts.</span>
+          <span className="photo-note">From the tandoor to the table</span>
         </div>
         <div className="story-copy">
-          <Eyebrow>MORE THAN A MEAL</Eyebrow>
-          <h2>
-            Pull up a chair.
-            <br />
-            <em>You’re family here.</em>
-          </h2>
+          <p className="section-label">About Kale Da Dhaba</p>
+          <h2>Made for the table.</h2>
           <p>{restaurant.story}</p>
           <button className="text-button" onClick={() => navigate("about")}>
-            A little about us <ArrowUpRight size={19} />
+            About Kale Da Dhaba <ArrowUpRight size={19} />
           </button>
-          <div className="story-sign">
-            With love, <span>Kale Da Dhaba</span>
-          </div>
         </div>
       </section>
       <section className="section review-preview">
