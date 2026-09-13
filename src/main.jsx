@@ -375,22 +375,22 @@ function Home(props) {
           </div>
         </div>
       </section>
-      <section className="section favourites">
+      <section className="section favourites home-featured">
         <div className="section-heading">
           <div>
-            <h2>
-              Come hungry. <em>Leave happy.</em>
-            </h2>
+            <p className="section-label">Featured dishes</p>
+            <h2>Made for a proper meal.</h2>
             <p>
-              The classics you crave, and the favourites you’ll come back for.
+              A few Punjabi favourites to begin with. Build the rest of your
+              table from the full menu.
             </p>
           </div>
           <button className="text-button" onClick={() => navigate("menu")}>
             View Full Menu <ArrowUpRight size={19} />
           </button>
         </div>
-        <div className="food-grid">
-          {menu.slice(0, 4).map((d) => (
+        <div className="food-grid featured-grid">
+          {menu.filter((d) => ["dal", "chicken", "kulcha"].includes(d.id)).map((d) => (
             <FoodCard key={d.id} dish={d} {...props} />
           ))}
         </div>
