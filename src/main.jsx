@@ -31,8 +31,10 @@ import {
   Table2,
   RotateCcw,
   LockKeyhole,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
-import { menu, categories, photos, restaurant, sampleReviews } from "./data";
+import { menu, categories, photos, restaurant, sampleReviews, galleryAssets } from "./data";
 import {
   STORAGE_KEY,
   emptyCustomer,
@@ -687,41 +689,48 @@ function About({ navigate }) {
   );
 }
 function Gallery() {
-  const gallery = [
-    ["022214.webp", "A proper Punjabi feast"],
-    ["022124.webp", "For the love of cheese"],
-    ["022037.webp", "A refreshing little pause"],
-    ["022118.webp", "Crunch into happiness"],
-    ["022258.webp", "Butter makes it better"],
-    ["022017.webp", "Big flavours, all wrapped up"],
-  ];
+  const [active, setActive] = useState(null);
+  const openButton = useRef(null);
+  const closeLightbox = () => {
+    setActive(null);
+    window.setTimeout(() => openButton.current?.focus(), 0);
+  };
+  useEffect(() => {
+    if (active === null) return;
+    const onKey = (event) => {
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowRight") setActive((index) => (index + 1) % galleryAssets.length);
+      if (event.key === "ArrowLeft") setActive((index) => (index - 1 + galleryAssets.length) % galleryAssets.length);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [active]);
   return (
     <>
-      <section className="page-intro">
-        <Eyebrow>A FEAST FOR YOUR FEED</Eyebrow>
-        <h1 tabIndex={-1}>
-          First, we eat <em>with our eyes.</em>
-        </h1>
-        <p>A little glimpse of the good things from our kitchen.</p>
+      <section className="page-intro gallery-intro">
+        <h1 tabIndex={-1}>A look inside.</h1>
+        <p>Food, people and moments from Kale Da Dhaba.</p>
       </section>
-      <section className="section gallery-grid">
-        {gallery.map(([image, title]) => (
-          <figure key={image}>
-            <Image
-              src={`${import.meta.env.BASE_URL}assets/${image}`}
-              alt={title}
-              loading="lazy"
-            />
-            <figcaption>
-              {title}
-              <ArrowUpRight size={18} />
-            </figcaption>
+      <section className="section gallery-composition" aria-label="Kale Da Dhaba food gallery">
+        {galleryAssets.map((image, index) => (
+          <figure className={`gallery-item gallery-item-${index + 1}`} key={image.file}>
+            <button
+              type="button"
+              onClick={(event) => {
+                openButton.current = event.currentTarget;
+                setActive(index);
+              }}
+              aria-label={`Open image: ${image.caption}`}
+            >
+              <Image src={image.src} alt={image.alt} loading={index < 3 ? "eager" : "lazy"} />
+            </button>
+            <figcaption>{image.caption}</figcaption>
           </figure>
         ))}
       </section>
       <div className="gallery-social">
         <Instagram />
-        <p>More flavour, fresh from our feed.</p>
+        <p>More food moments on Instagram.</p>
         <a
           className="text-button"
           href={restaurant.instagram}
@@ -731,6 +740,18 @@ function Gallery() {
           @kaledadhaba <ArrowUpRight size={18} />
         </a>
       </div>
+      <p className="gallery-source-note">Gallery uses supplied food photography. A front signboard, owner/team, kitchen action, signature plated dish and seating photograph are still needed.</p>
+      {active !== null && (
+        <div className="lightbox-backdrop" onClick={closeLightbox}>
+          <section className="gallery-lightbox" role="dialog" aria-modal="true" aria-labelledby="gallery-lightbox-title" onClick={(event) => event.stopPropagation()}>
+            <button className="icon-button lightbox-close" autoFocus aria-label="Close gallery image" onClick={closeLightbox}><X /></button>
+            <Image src={galleryAssets[active].src} alt={galleryAssets[active].alt} />
+            <div className="lightbox-caption" id="gallery-lightbox-title">{galleryAssets[active].caption}</div>
+            <button className="lightbox-nav previous" aria-label="Previous gallery image" onClick={() => setActive((active - 1 + galleryAssets.length) % galleryAssets.length)}><ChevronLeft /></button>
+            <button className="lightbox-nav next" aria-label="Next gallery image" onClick={() => setActive((active + 1) % galleryAssets.length)}><ChevronRight /></button>
+          </section>
+        </div>
+      )}
     </>
   );
 }
