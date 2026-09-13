@@ -4,13 +4,18 @@ import {
   calculateTotals,
   validateCustomer,
   sampleCustomer,
+  deliveryConfig,
+  isServiceablePincode,
   createOrder,
   notification,
 } from "./domain.js";
 test("totals include delivery below threshold and waive it at 799", () => {
   assert.deepEqual(calculateTotals([]), { subtotal: 0, delivery: 0, total: 0 });
   assert.equal(calculateTotals([{ price: 260, quantity: 2 }]).total, 560);
+  assert.deepEqual(calculateTotals([{ price: 260, quantity: 1 }, { price: 70, quantity: 1 }]), { subtotal: 330, delivery: 40, total: 370 });
+  assert.equal(calculateTotals([{ price: 798, quantity: 1 }]).delivery, deliveryConfig.fee);
   assert.equal(calculateTotals([{ price: 799, quantity: 1 }]).delivery, 0);
+  assert.equal(calculateTotals([{ price: 800, quantity: 1 }]).delivery, 0);
 });
 test("customer validation covers required fields and optional formats", () => {
   assert.deepEqual(validateCustomer(sampleCustomer), {});
@@ -29,6 +34,9 @@ test("customer validation covers required fields and optional formats", () => {
   );
   assert.ok(validateCustomer({ ...sampleCustomer, phone: "1234567890" }).phone);
   assert.ok(validateCustomer({ ...sampleCustomer, pincode: "012345" }).pincode);
+  assert.ok(validateCustomer({ ...sampleCustomer, pincode: "110001" }).pincode);
+  assert.equal(isServiceablePincode("143001"), true);
+  assert.equal(isServiceablePincode("110001"), false);
 });
 test("order snapshots do not mutate when cart or customer changes", () => {
   const items = [{ id: "dal", name: "Dal Makhani", price: 260, quantity: 2 }];

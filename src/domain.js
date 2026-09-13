@@ -5,6 +5,8 @@ export const emptyCustomer = {
   alternate: "",
   email: "",
   address: "",
+  locality: "",
+  landmark: "",
   pincode: "",
   instructions: "",
 };
@@ -13,16 +15,31 @@ export const sampleCustomer = {
   phone: "9876543210",
   alternate: "",
   email: "aarav.demo@example.com",
-  address: "24, Sample Garden Lane, Demo Colony, Amritsar",
+  address: "24, Sample Garden Lane",
+  locality: "Demo Colony, Amritsar",
+  landmark: "Near Sample Park",
   pincode: "143001",
   instructions:
     "Fictional walkthrough order. Please keep the food mildly spiced.",
 };
+export const deliveryConfig = {
+  fee: 40,
+  freeDeliveryThreshold: 799,
+  serviceablePincodes: {
+    "143001": "Amritsar Central — sample area",
+    "143002": "Ranjit Avenue — sample area",
+  },
+};
 export function calculateTotals(items) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
-  const delivery = subtotal === 0 || subtotal >= 799 ? 0 : 40;
+  const delivery =
+    subtotal === 0 || subtotal >= deliveryConfig.freeDeliveryThreshold
+      ? 0
+      : deliveryConfig.fee;
   return { subtotal, delivery, total: subtotal + delivery };
 }
+export const isServiceablePincode = (pincode) =>
+  Boolean(deliveryConfig.serviceablePincodes[pincode]);
 export function validateCustomer(c) {
   const e = {};
   if (c.name.trim().length < 2) e.name = "Please enter your full name.";
@@ -35,8 +52,12 @@ export function validateCustomer(c) {
   if (c.address.trim().length < 10)
     e.address =
       "Add your house number, street, and city (at least 10 characters).";
+  if (c.locality.trim().length < 2)
+    e.locality = "Add your locality and city.";
   if (!/^[1-9]\d{5}$/.test(c.pincode))
     e.pincode = "Enter a valid 6-digit Indian pincode.";
+  else if (!isServiceablePincode(c.pincode))
+    e.pincode = "This demo pincode is outside the sample delivery areas.";
   return e;
 }
 export function createOrder(items, customer, method, id) {
