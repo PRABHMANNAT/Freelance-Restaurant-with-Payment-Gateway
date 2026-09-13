@@ -418,23 +418,9 @@ function Home(props) {
         </div>
       </section>
       <section className="section review-preview">
-        <Eyebrow>HAPPY PLATES. HAPPIER PEOPLE.</Eyebrow>
-        <h2>
-          Good food gets <em>people talking.</em>
-        </h2>
+        <p className="section-label">Customer notes</p>
+        <h2>Good food gets people talking.</h2>
         <div className="review-stage">
-          <div className="review-floating-dishes" aria-hidden="true">
-            <Image
-              src={photos.wrap}
-              alt=""
-              className="floating-dish floating-wrap"
-            />
-            <Image
-              src={photos.drink}
-              alt=""
-              className="floating-dish floating-drink"
-            />
-          </div>
           <div className="review-grid">
             {sampleReviews.map((r) => (
               <ReviewCard key={r.id} review={r} />
@@ -447,6 +433,20 @@ function Home(props) {
         >
           Read all reviews <ArrowUpRight size={18} />
         </button>
+      </section>
+      <section className="home-visit" aria-labelledby="visit-heading">
+        <div>
+          <p className="section-label">Visit</p>
+          <h2 id="visit-heading">Come by when the table calls.</h2>
+        </div>
+        <div className="visit-details">
+          <MapPin size={20} aria-hidden="true" />
+          <p>
+            <strong>{restaurant.location}</strong>
+            <span>{restaurant.visit.address}</span>
+          </p>
+          <a className="text-button" href="#contact">Visit details <ArrowUpRight size={18} /></a>
+        </div>
       </section>
       <OrderBanner navigate={navigate} />
     </>
@@ -947,12 +947,8 @@ function OrderBanner({ navigate }) {
   return (
     <section className="order-banner">
       <div>
-        <Eyebrow>A LITTLE HAPPINESS, DELIVERED</Eyebrow>
-        <h2>
-          Your cravings called.
-          <br />
-          <em>We’ve got you.</em>
-        </h2>
+        <p className="section-label">Order online</p>
+        <h2>Your favourites are ready when you are.</h2>
       </div>
       <button className="button cream" onClick={() => navigate("menu")}>
         Let’s Order <ArrowUpRight size={20} />
