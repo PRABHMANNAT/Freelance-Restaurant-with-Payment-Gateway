@@ -798,9 +798,9 @@ function Contact({ navigate }) {
             Let’s get <em>together.</em>
           </h2>
           {[
-            [MapPin, "Find us", restaurant.address],
-            [Smartphone, "Give us a call", restaurant.phone],
-            [Clock, "Opening hours", restaurant.hours],
+            [MapPin, "Find us", restaurant.visit.address],
+            [Smartphone, "Give us a call", restaurant.visit.phone],
+            [Clock, "Opening hours", restaurant.visit.hours],
           ].map(([Icon, title, text]) => (
             <div className="contact-row" key={title}>
               <Icon />

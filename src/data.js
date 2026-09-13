@@ -10,15 +10,27 @@ export const photos = {
 export const restaurant = {
   name: "Kale Da Dhaba",
   tagline: "Taste you trust.",
-  since: "1994",
   instagram: "https://www.instagram.com/kaledadhaba/",
-  address: "Verified restaurant address to be added",
-  phone: "Verified phone number to be added",
-  hours: "Verified opening hours to be added",
+  location: "Amritsar",
+  services: "Dine in · Takeaway · Delivery",
+  visit: {
+    address: "Address awaiting owner verification",
+    phone: "Phone number awaiting owner verification",
+    hours: "Opening hours awaiting owner verification",
+  },
+  authoring: {
+    pendingVerification: [
+      "Address, phone number and opening hours",
+      "Founding-year claim and extended history",
+      "Production menu, pricing and testimonials",
+    ],
+    demoDisclosure:
+      "Demo content only. Please verify restaurant details before publishing.",
+  },
   story:
     "From comforting Punjabi classics to the joy of sharing a meal, Kale Da Dhaba is about food that brings people together. Rich gravies, warm breads, and a generous helping of hospitality — there’s always a little more love at our table.",
   storyNote:
-    "Brand bio: serving authentic Punjabi flavours since 1994. Extended story is editable demo copy.",
+    "Extended story is editable demo copy and awaits owner verification.",
 };
 export const categories = [
   "All dishes",
