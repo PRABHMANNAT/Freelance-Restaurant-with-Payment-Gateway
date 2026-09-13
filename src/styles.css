@@ -427,7 +427,6 @@ button:active {
 .motion-spark { position: absolute; width: 7px; height: 7px; display: block; border-radius: 50%; background: #fbf7c2; box-shadow: 0 0 18px 7px rgba(255,244,174,.35); animation: spark-float 6s ease-in-out infinite; }
 .spark-one { top: 23%; left: 26%; }
 .spark-two { bottom: 33%; right: 18%; animation-delay: -3s; }
-}
 .hero-photo-label {
   position: absolute;
   top: 28px;
@@ -787,19 +786,72 @@ button:active {
 }
 .review-preview > h2 {
   text-align: center;
-  font-size: 40px;
+  font-size: 46px;
+  text-wrap: balance;
+}
+.review-stage {
+  position: relative;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.review-floating-dishes {
+  pointer-events: none;
+}
+.floating-dish {
+  position: absolute;
+  z-index: 2;
+  width: 106px;
+  height: 106px;
+  object-fit: cover;
+  border: 6px solid #fffdf4;
+  border-radius: 50%;
+  box-shadow: 0 15px 32px rgba(39, 45, 25, 0.22);
+}
+.floating-wrap {
+  left: -54px;
+  top: 5px;
+  animation: dish-float 6s ease-in-out infinite;
+}
+.floating-drink {
+  right: -54px;
+  bottom: -18px;
+  animation: dish-float 6.5s ease-in-out infinite reverse;
 }
 .review-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  gap: 16px;
   margin-top: 35px;
 }
 .review-card {
-  padding: 28px;
-  background: #fffdf7;
+  padding: 31px 29px 27px;
+  background: #fffefa;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 16px;
+  box-shadow: 0 12px 22px rgba(42, 46, 27, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 17px 32px rgba(42, 46, 27, 0.11);
+}
+.review-card:nth-child(2) {
+  background: #394423;
+  color: #fffdf1;
+  border-color: #394423;
+}
+.review-card:nth-child(2) .review-author small {
+  color: #d5d9b2;
+}
+.review-card:nth-child(2) blockquote {
+  color: #fffdf1;
+}
+.review-card:nth-child(2) .avatar {
+  background: #dfe585;
+  color: #374218;
+}
+.review-card:nth-child(2) .stars {
+  color: #e5de83;
 }
 .stars {
   display: flex;
@@ -2142,6 +2194,7 @@ td button {
 @keyframes hero-breathe { from { transform: scale(1.01); } to { transform: scale(1.075); } }
 @keyframes orbit-drift { 0%,100% { transform: translate3d(0,0,0) rotate(0); } 50% { transform: translate3d(-18px,14px,0) rotate(14deg); } }
 @keyframes spark-float { 0%,100% { opacity:.15; transform: translateY(8px) scale(.8); } 50% { opacity:1; transform: translateY(-18px) scale(1); } }
+@keyframes dish-float { 0%,100% { transform: translateY(0) rotate(-7deg); } 50% { transform: translateY(-14px) rotate(3deg); } }
 @media (min-width: 1500px) {
   .hero {
     min-height: 700px;
@@ -2460,6 +2513,17 @@ td button {
   }
   .review-preview > h2 {
     font-size: 34px;
+  }
+  .floating-dish {
+    width: 74px;
+    height: 74px;
+    border-width: 4px;
+  }
+  .floating-wrap {
+    left: -25px;
+  }
+  .floating-drink {
+    right: -25px;
   }
   .order-banner {
     padding: 37px 6%;
@@ -2898,6 +2962,9 @@ td button {
   }
   .review-preview > h2 {
     font-size: 32px;
+  }
+  .review-floating-dishes {
+    display: none;
   }
   .review-grid {
     grid-template-columns: 1fr;

@@ -466,10 +466,24 @@ function Home(props) {
         <h2>
           Good food gets <em>people talking.</em>
         </h2>
-        <div className="review-grid">
-          {sampleReviews.map((r) => (
-            <ReviewCard key={r.id} review={r} />
-          ))}
+        <div className="review-stage">
+          <div className="review-floating-dishes" aria-hidden="true">
+            <Image
+              src={photos.wrap}
+              alt=""
+              className="floating-dish floating-wrap"
+            />
+            <Image
+              src={photos.drink}
+              alt=""
+              className="floating-dish floating-drink"
+            />
+          </div>
+          <div className="review-grid">
+            {sampleReviews.map((r) => (
+              <ReviewCard key={r.id} review={r} />
+            ))}
+          </div>
         </div>
         <button
           className="text-button centered"
