@@ -69,7 +69,8 @@ export function createOrder(items, customer, method, id) {
     ...calculateTotals(items),
     method,
     paymentStatus: method === "COD" ? "Pending — COD" : "Paid — simulated",
-    status: "Confirmed — demo",
+    status: "Awaiting restaurant acceptance — demo",
+    notificationStatus: "Not sent — demo",
     estimate: "35–45 minutes (demo estimate)",
   };
 }

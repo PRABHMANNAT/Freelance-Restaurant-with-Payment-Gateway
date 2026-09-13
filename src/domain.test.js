@@ -48,6 +48,8 @@ test("order snapshots do not mutate when cart or customer changes", () => {
   assert.equal(order.customer.name, sampleCustomer.name);
   assert.equal(order.total, 560);
   assert.equal(order.paymentStatus, "Pending — COD");
+  assert.equal(order.status, "Awaiting restaurant acceptance — demo");
+  assert.equal(order.notificationStatus, "Not sent — demo");
 });
 test("payment status and both messages derive from the same order", () => {
   for (const method of ["UPI", "Card"]) {
@@ -58,6 +60,8 @@ test("payment status and both messages derive from the same order", () => {
       "KDD-TEST",
     );
     assert.equal(o.paymentStatus, "Paid — simulated");
+    assert.equal(o.status, "Awaiting restaurant acceptance — demo");
+    assert.equal(o.notificationStatus, "Not sent — demo");
     for (const owner of [true, false]) {
       const message = notification(o, owner);
       for (const text of [
