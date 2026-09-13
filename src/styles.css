@@ -3906,6 +3906,40 @@ td button {
   .cart-item > img { width: 72px; height: 72px; }
   .cart-item-end { min-width: 50px; }
 }
+/* Payment is deliberately a compact, non-payable simulator. */
+.payment-options > label { min-height: 72px; border-radius: var(--radius-card); }
+.payment-options > label.selected { background: #eef0e4; border-color: var(--olive); box-shadow: inset 3px 0 0 var(--olive); }
+.payment-options input { min-width: 18px; min-height: 18px; }
+.mock-payment { border-radius: var(--radius-card); background: var(--cream); }
+.payment-disclaimer { padding: 16px 0; color: var(--dark); }
+.payment-outcome {
+  margin: 16px 0;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--cream);
+}
+.payment-outcome.failed { border-color: #d5a998; color: #7c3828; background: #fff7f2; }
+.payment-outcome.cancelled { border-color: #d8cfaa; color: #6b5e32; background: #fffbeb; }
+.payment-outcome.pending { border-color: #aebca1; color: #405b41; background: #f3f7ef; }
+.payment-outcome p { margin-top: 5px; font-size: 13px; line-height: 1.5; }
+.payment-outcome > div { display: flex; align-items: center; gap: 14px; margin-top: 13px; }
+.payment-outcome .button { min-height: 40px; font-size: 13px; }
+.demo-controls {
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+}
+.demo-controls summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--olive); font-size: 13px; font-weight: 600; }
+.demo-controls p { margin: 0 0 10px; font-size: 12px; line-height: 1.5; }
+.demo-controls > div { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 8px; }
+.demo-controls button { min-height: 38px; padding: 8px 11px; border: 1px solid var(--border); border-radius: 7px; color: var(--dark); font-size: 12px; }
+.demo-controls button:hover { background: var(--cream); }
+@media (max-width: 560px) {
+  .payment-outcome > div { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .demo-controls > div { display: grid; grid-template-columns: 1fr; }
+  .demo-controls button { width: 100%; min-height: 44px; }
+}
 /* Checkout is a focused delivery flow with an anchored, shared order total. */
 .checkout-header {
   position: sticky;
