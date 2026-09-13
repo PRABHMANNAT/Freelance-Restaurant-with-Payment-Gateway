@@ -67,3 +67,10 @@ Checked on 14 September 2026 using the refreshed local Vite app.
 - Delivery is configured in `src/domain.js`: ₹40 below a ₹799 subtotal and free from ₹799. Deterministic tests cover ₹330 (Dal ₹260 + naan ₹70) = ₹370 total, plus ₹798, ₹799 and ₹800 threshold values.
 - Serviceability is now checked against clearly marked sample demo pincodes 143001 and 143002. A valid six-digit pincode outside those areas has an adjacent field error and does not advance to payment.
 - Checkout groups contact, address and kitchen-instruction fields. All test data remains fictional. Valid customer input persists in browser storage through errors, payment back-navigation and cart editing.
+
+## Payment simulator revision
+
+- The payment UI remains frontend-only. It has no gateway SDK, real card field, payable UPI QR, network payment request or outbound notification action.
+- UPI and Card use the single `Simulate payment · ₹total` action; COD uses `Place demo order · ₹total` and creates an order with `Pending — COD` payment status. Payment, fulfilment and notification state are recorded separately: a successful simulation is `Paid — simulated`, while fulfilment remains `Awaiting restaurant acceptance — demo` and notification is `Not sent — demo`.
+- Demo controls cover failed, cancelled and pending states. None creates an order or paid confirmation; each keeps the local cart, address and kitchen instructions available for retry or method selection. The primary action locks immediately while processing.
+- Automated results observed this turn: all domain tests pass, including the immutable ₹370 snapshot and duplicate-ID persistence guard; the Vite production build passes. Browser interaction branches were implemented but not independently provider-verified, because this demo intentionally has no provider or backend.

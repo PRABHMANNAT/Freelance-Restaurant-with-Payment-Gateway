@@ -74,6 +74,10 @@ export function createOrder(items, customer, method, id) {
     estimate: "35–45 minutes (demo estimate)",
   };
 }
+export function addOrderOnce(state, order) {
+  if (state.orders.some((existing) => existing.id === order.id)) return state;
+  return { ...state, cart: {}, orders: [order, ...state.orders] };
+}
 export function readSaved() {
   try {
     const s = JSON.parse(localStorage.getItem(STORAGE_KEY));

@@ -40,6 +40,7 @@ import {
   calculateTotals,
   validateCustomer,
   createOrder,
+  addOrderOnce,
   readSaved,
   money,
   itemText,
@@ -175,11 +176,7 @@ function App() {
   }
   function complete(order) {
     setCheckoutProcessing(false);
-    setSaved((s) =>
-      s.orders.some((o) => o.id === order.id)
-        ? s
-        : { ...s, cart: {}, orders: [order, ...s.orders] },
-    );
+    setSaved((s) => addOrderOnce(s, order));
     setSelectedOrder(order.id);
     navigate("confirmation", true);
   }
@@ -1544,7 +1541,7 @@ function Confirmation({ order: o, navigate }) {
         <h1 tabIndex={-1}>
           Thank you, <em>{o.customer.name.split(" ")[0]}.</em>
         </h1>
-        <p>Your demo order is confirmed. Let the cravings count down.</p>
+        <p>Payment status is shown below. This demo has not contacted the restaurant or sent a notification.</p>
         <div className="confirmation-id">
           {o.id}
           <span>{o.paymentStatus}</span>

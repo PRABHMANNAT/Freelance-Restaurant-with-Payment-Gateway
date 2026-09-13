@@ -7,6 +7,7 @@ import {
   deliveryConfig,
   isServiceablePincode,
   createOrder,
+  addOrderOnce,
   notification,
 } from "./domain.js";
 test("totals include delivery below threshold and waive it at 799", () => {
@@ -50,6 +51,12 @@ test("order snapshots do not mutate when cart or customer changes", () => {
   assert.equal(order.paymentStatus, "Pending — COD");
   assert.equal(order.status, "Awaiting restaurant acceptance — demo");
   assert.equal(order.notificationStatus, "Not sent — demo");
+  const initial = { cart: { dal: 2 }, orders: [] };
+  const once = addOrderOnce(initial, order);
+  const twice = addOrderOnce(once, order);
+  assert.equal(once.orders.length, 1);
+  assert.equal(twice.orders.length, 1);
+  assert.deepEqual(twice.cart, {});
 });
 test("payment status and both messages derive from the same order", () => {
   for (const method of ["UPI", "Card"]) {
