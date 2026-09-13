@@ -1,4 +1,11 @@
 @font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(../fonts/Fraunces-600.ttf) format('truetype');
+}
+@font-face {
   font-family: 'DM Sans';
   font-style: normal;
   font-weight: 400;
