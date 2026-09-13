@@ -36,3 +36,20 @@ The browser was returned to a clean homepage, ready for recording.
 - Instagram reels required sign-in, so no video was embedded. Supplied photography is the reliable fallback.
 - Sample dishes/prices, testimonials, and extended story are labelled demo content. Contact details await verification.
 - This is functional/visual QA for the requested demo, not a full production accessibility or security audit.
+
+## Shared-foundation and homepage revision
+
+Checked on 14 September 2026 using the refreshed local Vite app.
+
+- Captured pre-change browser baselines at 1440 × 900 and 390 × 844. The previous view used a rounded floating header, nested pill navigation, global hero image shade, circular seal and decorative motion.
+- Verified the revised header and footer at 1440 px, 768 px and 390 px. Desktop presents plain links and an active underline; tablet and mobile expose the labelled menu toggle and retained cart count.
+- The revised 390 px hero keeps the order actions before a 4:3 food image, uses 20 px gutters and does not reduce the primary action below the shared 50 px control height.
+- The revised 1440 px hero uses the requested 5/7 split, an intentional food crop, no global dark gradient and one 88 px signboard-style stamp. The source is the existing locally supplied food photo, so its original watermark status is preserved.
+- Reduced-motion rules already disable animation and transitions. The current revision no longer renders looping hero or floating-dish decoration.
+- Route changes scroll to the top and then move focus to the route heading. Checkout validation continues to focus the first field with an error; the cart focus trap is unchanged.
+- `npm test` passes all four domain tests. `npm run build` succeeds when run outside the restricted sandbox, as required by esbuild to resolve this workspace path.
+
+### Next owner-approved photos to request
+
+1. A clean close serving shot showing a hot tandoor bread or dal being plated, with no customer faces or third-party watermark.
+2. A daylight exterior or recognisable entrance/signage photo for the Amritsar location, supplied with permission for website use.
