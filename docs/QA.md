@@ -53,3 +53,10 @@ Checked on 14 September 2026 using the refreshed local Vite app.
 
 1. A clean close serving shot showing a hot tandoor bread or dal being plated, with no customer faces or third-party watermark.
 2. A daylight exterior or recognisable entrance/signage photo for the Amritsar location, supplied with permission for website use.
+
+## About and menu revision
+
+- The About page now uses an interim introduction because no owner-approved restaurant history, dated milestones, kitchen/team/frontage photograph, signature-dish detail or attributed owner quote is available in this repository. The observed public Instagram “since 1994” line is recorded as unverified and is not displayed as history.
+- The menu remains a 16-item demonstration dataset. Its dish names, descriptions, prices, images and Pizza/Pasta categorisation still await owner confirmation; the UI does not infer allergens, egg-free status, no-onion/no-garlic preparation, spice levels, portions or modifiers.
+- Search clearing was reproduced through the visible clear button. The revised input also clears on Escape; neither path resets selected category or diet, so valid filter intersections are preserved. The visible reset action clears all three controls only in the no-results state.
+- Mobile menu cards are compact horizontal rows with a 112 px image and a 44 px Add/quantity action. The existing mobile cart summary remains fixed above the safe-area region and reads item count, subtotal and View cart.

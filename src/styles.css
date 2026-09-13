@@ -3761,6 +3761,111 @@ td button {
   .visit-details .text-button { flex-basis: 100%; margin-left: 35px; }
   .order-banner { width: calc(100% - 40px); padding: 32px 28px; align-items: flex-start; flex-direction: column; }
 }
+/* Menu: bring food forward and use responsive, low-chrome presentation. */
+.menu-intro {
+  width: min(var(--content-width), calc(100% - 40px));
+  margin: 0 auto;
+  padding: 42px 0 20px;
+}
+.menu-intro h1 {
+  color: var(--dark);
+  font-size: clamp(38px, 4.2vw, 58px);
+}
+.menu-intro p {
+  margin-top: 9px;
+  color: var(--muted);
+  font-size: 17px;
+}
+.menu-section {
+  width: min(var(--content-width), calc(100% - 40px));
+  max-width: none;
+  padding: 22px 0 72px;
+}
+.menu-toolbar { align-items: stretch; }
+.search { max-width: 520px; min-height: 50px; border-color: var(--border); background: var(--surface); }
+.search button { width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+.diet-filters { border-color: var(--border); background: var(--cream); }
+.diet-filters button { min-height: 42px; padding-inline: 17px; }
+.menu-category-wrap {
+  position: sticky;
+  top: 80px;
+  z-index: 10;
+  margin-top: 24px;
+  padding-block: 10px;
+  background: color-mix(in srgb, var(--cream) 96%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.category-tabs { margin-top: 0; padding-bottom: 0; border-bottom: 0; }
+.category-tabs button { min-height: 42px; padding: 9px 15px; border-radius: var(--radius-button); }
+.menu-count { margin: 18px 0; font-size: 13px; }
+.menu-count > span:first-child { color: var(--dark); font-weight: 600; }
+.menu-section .food-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 26px; }
+.menu-section .food-card { border: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: transparent; }
+.menu-section .food-card:hover { transform: none; box-shadow: none; }
+.menu-section .food-image { height: 218px; margin-top: 22px; border-radius: var(--radius-card); }
+.menu-section .food-content { padding: 16px 0 21px; }
+.menu-section .food-content p { min-height: 42px; }
+.menu-section .food-bottom { min-height: 44px; margin-top: 15px; }
+.menu-section .add-button { min-height: 44px; }
+@media (max-width: 1100px) {
+  .menu-section .food-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; }
+}
+@media (max-width: 800px) {
+  .menu-intro { padding: 31px 0 13px; }
+  .menu-intro p { font-size: 16px; }
+  .menu-section { padding-top: 16px; padding-bottom: 54px; }
+  .menu-toolbar { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .search { max-width: none; }
+  .diet-filters { justify-content: stretch; }
+  .diet-filters button { flex: 1; justify-content: center; min-height: 44px; }
+  .menu-category-wrap { top: 64px; margin-inline: -20px; padding: 8px 20px; }
+  .category-tabs { gap: 5px; }
+  .category-tabs button { min-height: 44px; padding-inline: 13px; }
+  .menu-count > span:last-child { display: none; }
+  .menu-section .food-grid { grid-template-columns: 1fr; gap: 0; }
+  .menu-section .food-card {
+    position: relative;
+    display: block;
+    min-height: 148px;
+    padding-right: 126px;
+  }
+  .menu-section .food-image {
+    position: absolute;
+    top: 16px;
+    right: 0;
+    width: 112px;
+    height: 112px;
+    margin: 0;
+    border-radius: 8px;
+  }
+  .menu-section .diet-mark { right: 7px; bottom: 7px; }
+  .menu-section .food-content { padding: 17px 0 16px; }
+  .menu-section .food-category { display: none; }
+  .menu-section .food-content h3 { margin-top: 0; font-size: 19px; }
+  .menu-section .food-content p {
+    display: -webkit-box;
+    min-height: 0;
+    margin-top: 5px;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .menu-section .food-bottom { display: block; margin-top: 9px; }
+  .menu-section .food-bottom > strong { font-size: 15px; }
+  .menu-section .food-bottom > .add-button,
+  .menu-section .food-bottom > .quantity {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 112px;
+    min-height: 44px;
+  }
+  .menu-section .food-bottom > .add-button { justify-content: center; padding-inline: 8px; }
+  .menu-section .food-bottom > .quantity { justify-content: space-between; }
+  .menu-section .food-bottom > .quantity button { min-width: 44px; min-height: 44px; }
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *:before,

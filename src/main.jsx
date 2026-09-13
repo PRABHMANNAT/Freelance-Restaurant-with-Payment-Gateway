@@ -310,9 +310,9 @@ function App() {
             onClick={() => setCartOpen(true)}
           >
             <ShoppingBag size={18} />
-            {count} {count === 1 ? "item" : "items"} in your bag{" "}
+            {count} {count === 1 ? "item" : "items"}
             <span>
-              {money(totals.total)} · View cart <ArrowRight size={16} />
+              · {money(totals.total)} | View cart <ArrowRight size={16} />
             </span>
           </button>
         )}
@@ -452,13 +452,13 @@ function Home(props) {
     </>
   );
 }
-function FoodCard({ dish: d, cart, add, change }) {
+function FoodCard({ dish: d, cart, add, change, showTag = true }) {
   const q = cart[d.id] || 0;
   return (
     <article className="food-card">
       <div className="food-image">
         <Image src={d.image} alt={d.name} loading="lazy" />
-        {d.tag && <span className="food-tag">{d.tag}</span>}
+        {showTag && d.tag && <span className="food-tag">{d.tag}</span>}
         <span
           className={`diet-mark ${d.veg ? "veg" : "nonveg"}`}
           aria-label={d.veg ? "Vegetarian" : "Non-vegetarian"}
@@ -589,7 +589,7 @@ function MenuPage(props) {
         {filtered.length ? (
           <div className="food-grid">
             {filtered.map((d) => (
-              <FoodCard key={d.id} dish={d} {...props} />
+              <FoodCard key={d.id} dish={d} showTag={false} {...props} />
             ))}
           </div>
         ) : (
