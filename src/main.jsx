@@ -1295,6 +1295,17 @@ function Checkout({
           <span>3</span>Confirmation
         </li>
       </ol>
+      <details className="checkout-mobile-summary">
+        <summary>
+          <span>Order summary</span>
+          <strong>{money(totals.total)}</strong>
+        </summary>
+        <OrderSummary
+          items={items}
+          totals={totals}
+          onEditCart={() => navigate("menu")}
+        />
+      </details>
       <div className="checkout-grid">
         <div className="checkout-form-card">
           {step === 1 ? (
