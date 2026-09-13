@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env*
+!.env.example
+asset-contact-sheet.jpg
+*.log
+.DS_Store
