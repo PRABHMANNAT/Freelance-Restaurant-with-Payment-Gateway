@@ -44,6 +44,7 @@ import {
   money,
   itemText,
   notification,
+  deliveryConfig,
 } from "./domain";
 import "./styles.css";
 
@@ -1064,12 +1065,7 @@ function Cart({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="cart-header">
-          <div>
-            <Eyebrow>A BAG FULL OF GOOD THINGS</Eyebrow>
-            <h2 id="cart-heading">
-              Your <em>cart.</em> <small>({count})</small>
-            </h2>
-          </div>
+          <h2 id="cart-heading">Your order <small>({count})</small></h2>
           <button
             className="icon-button"
             aria-label="Close cart"
@@ -1081,10 +1077,7 @@ function Cart({
         {items.length ? (
           <>
             <p className="delivery-notice">
-              <Truck size={17} />{" "}
-              {totals.subtotal >= 799
-                ? "Your demo delivery is on us."
-                : `${money(799 - totals.subtotal)} away from free demo delivery`}
+              <Truck size={17} /> Demo delivery is {money(deliveryConfig.fee)} below {money(deliveryConfig.freeDeliveryThreshold)}; free from {money(deliveryConfig.freeDeliveryThreshold)}.
             </p>
             <div className="cart-items">
               {items.map((i) => (
@@ -1092,7 +1085,7 @@ function Cart({
                   <Image src={i.image} alt={i.name} />
                   <div>
                     <h3>{i.name}</h3>
-                    <p>{money(i.price)}</p>
+                    <p>Unit price · {money(i.price)}</p>
                     <Quantity
                       name={i.name}
                       quantity={i.quantity}
@@ -1115,7 +1108,10 @@ function Cart({
             <div className="cart-checkout">
               <Totals totals={totals} />
               <button className="button full" onClick={checkout}>
-                Proceed to Checkout <ArrowRight size={18} />
+                Checkout · {money(totals.total)} <ArrowRight size={18} />
+              </button>
+              <button className="text-button cart-continue" onClick={onClose}>
+                Continue choosing
               </button>
               <p className="demo-note centered">
                 <ShieldCheck size={14} /> Demo order only. No money charged.
@@ -1125,12 +1121,8 @@ function Cart({
         ) : (
           <div className="empty-state">
             <ShoppingBag size={46} />
-            <h2>
-              A little empty.
-              <br />
-              <em>A lot of possibilities.</em>
-            </h2>
-            <p>Let’s find you something delicious.</p>
+            <h2>Your cart is empty.</h2>
+            <p>Find something you fancy on the menu.</p>
             <button
               className="button"
               onClick={() => {
@@ -1138,7 +1130,7 @@ function Cart({
                 navigate("menu");
               }}
             >
-              Explore Menu <ArrowRight size={18} />
+              Browse menu <ArrowRight size={18} />
             </button>
           </div>
         )}
