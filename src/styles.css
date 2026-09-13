@@ -122,24 +122,29 @@ button:active {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 22px;
-  border: 1px solid var(--olive);
-  background: var(--olive);
-  color: white;
-  padding: 16px 25px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+  gap: 13px;
+  border: 1px solid #596020;
+  background: #5e6622;
+  color: #fffef5;
+  padding: 15px 23px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.035em;
   min-height: 50px;
+  box-shadow: 0 9px 17px rgba(71, 80, 21, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 .button:hover {
-  background: #51561a;
-  border-color: #51561a;
+  background: #484f15;
+  border-color: #484f15;
+  box-shadow: 0 12px 23px rgba(71, 80, 21, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
 }
 .button.small {
-  padding: 11px 18px;
-  min-height: 42px;
-  gap: 14px;
+  padding: 10px 17px 10px 19px;
+  min-height: 40px;
+  gap: 11px;
+  font-size: 11px;
 }
 .button.cream {
   background: var(--cream);
