@@ -324,6 +324,14 @@ function App() {
             orders={saved.orders}
             reviews={saved.reviews}
             onSelect={(id) => setSelectedOrder(id)}
+            onUpdateOrder={(id, updates) =>
+              setSaved((s) => ({
+                ...s,
+                orders: s.orders.map((existing) =>
+                  existing.id === id ? { ...existing, ...updates } : existing,
+                ),
+              }))
+            }
             onReset={() => {
               setSaved({
                 cart: {},
@@ -1621,235 +1629,54 @@ const columns = [
   "Payment Status",
   "Order Status",
 ];
-function Dashboard({ orders, reviews, onReset, onSelect }) {
-  const [selected, setSelected] = useState(""),
-    [reset, setReset] = useState(false);
+function Dashboard({ orders, reviews, onReset, onSelect, onUpdateOrder }) {
+  const [selected, setSelected] = useState(""), [tab, setTab] = useState("orders"), [reset, setReset] = useState(false);
   const o = orders.find((x) => x.id === selected) || orders[0];
-  function select(id) {
-    setSelected(id);
-    onSelect(id);
-  }
+  const select = (id) => { setSelected(id); onSelect(id); };
+  const updateFulfilment = (stage) => {
+    if (!o) return;
+    onUpdateOrder(o.id, {
+      status: `${stage} — demo`,
+      fulfilmentStatus: `${stage} — demo`,
+      deliveryStatus: stage === "Accepted" ? null : `${stage} — simulated`,
+    });
+  };
   return (
     <section className="section dashboard">
       <div className="dashboard-heading">
-        <div>
-          <Eyebrow>BEHIND THE COUNTER</Eyebrow>
-          <h1 tabIndex={-1}>
-            Demo <em>Dashboard.</em>
-          </h1>
-          <p>
-            Your complete order workflow, without any external integrations.
-          </p>
-        </div>
-        <button className="button outline" onClick={() => setReset(true)}>
-          <RotateCcw size={16} /> Reset Demo
-        </button>
+        <div><h1 tabIndex={-1}>Seller demo</h1><p>Local browser data only. This is a presentation preview, not a production admin panel.</p></div>
+        <button className="button outline" onClick={() => setReset(true)}><RotateCcw size={16} /> Reset demo</button>
       </div>
-      {reset && (
-        <div className="reset-confirm" role="alert">
-          <div>
-            <strong>Start a fresh walkthrough?</strong>
-            <p>
-              This clears this demo’s cart, orders, customer details, and
-              reviews on this browser.
-            </p>
-          </div>
-          <button
-            className="button"
-            onClick={() => {
-              onReset();
-              setReset(false);
-              setSelected("");
-            }}
-          >
-            Yes, reset demo
-          </button>
-          <button className="button outline" onClick={() => setReset(false)}>
-            Cancel
-          </button>
-        </div>
-      )}
+      {reset && <div className="reset-confirm" role="alert"><div><strong>Reset this local demo?</strong><p>This clears only Kale Da Dhaba demo orders, cart, customer draft and demo reviews in this browser.</p></div><button className="button" onClick={() => { onReset(); setReset(false); setSelected(""); }}>Yes, reset demo</button><button className="button outline" onClick={() => setReset(false)}>Cancel</button></div>}
       <div className="dashboard-stats">
-        <article>
-          <ShoppingBag />
-          <span>Demo orders</span>
-          <strong>{orders.length}</strong>
-        </article>
-        <article>
-          <Banknote />
-          <span>Order value · simulated</span>
-          <strong>{money(orders.reduce((s, o) => s + o.total, 0))}</strong>
-        </article>
-        <article>
-          <MessageCircle />
-          <span>Message previews</span>
-          <strong>{orders.length * 2}</strong>
-        </article>
-        <article>
-          <Star />
-          <span>Submitted reviews</span>
-          <strong>{reviews.length}</strong>
-        </article>
+        <article><ShoppingBag /><span>Demo orders</span><strong>{orders.length}</strong></article>
+        <article><Banknote /><span>Order value · simulated</span><strong>{money(orders.reduce((sum, entry) => sum + entry.total, 0))}</strong></article>
+        <article><MessageCircle /><span>Generated previews</span><strong>{orders.length * 2}</strong></article>
+        <article><Star /><span>Local demo reviews</span><strong>{reviews.length}</strong></article>
       </div>
-      <div className="sheet-panel">
-        <div className="sheet-title">
-          <Table2 />
-          <div>
-            <h2>Google Sheets Preview — simulated</h2>
-            <p>
-              Local demo data · No Google account or spreadsheet is connected
-            </p>
-          </div>
-          <span className="sheet-saved">
-            <CheckCircle2 size={16} /> {orders.length} rows
-          </span>
-        </div>
-        <div className="sheet-toolbar">
-          <span>File</span>
-          <span>Edit</span>
-          <span>View</span>
-          <span>Insert</span>
-          <span>Format</span>
-          <span className="muted">Preview only</span>
-        </div>
-        {orders.length ? (
-          <div
-            className="table-scroll"
-            tabIndex={0}
-            role="region"
-            aria-label="Scrollable simulated order spreadsheet"
-          >
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  {columns.map((c) => (
-                    <th key={c}>{c}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((x, index) => (
-                  <tr
-                    key={x.id}
-                    className={o?.id === x.id ? "selected-row" : ""}
-                  >
-                    <td>{index + 1}</td>
-                    {[
-                      x.id,
-                      new Date(x.timestamp).toLocaleString("en-IN"),
-                      x.customer.name,
-                      x.customer.phone,
-                      x.customer.alternate || "—",
-                      x.customer.email || "—",
-                      x.customer.address,
-                      x.customer.pincode,
-                      itemText(x),
-                      x.customer.instructions || "—",
-                      money(x.total),
-                      x.method,
-                      x.paymentStatus,
-                      x.status,
-                    ].map((cell, i) => (
-                      <td key={i}>
-                        {i === 0 ? (
-                          <button
-                            onClick={() => select(x.id)}
-                            aria-label={`Preview order ${x.id}`}
-                          >
-                            {cell}
-                          </button>
-                        ) : (
-                          cell
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div className="empty-state compact">
-            <Table2 size={35} />
-            <h3>Your first order starts here.</h3>
-            <p>
-              Place a demo order and its full details will appear automatically.
-            </p>
-            <a className="text-button" href="#menu">
-              Explore Menu <ArrowRight size={17} />
-            </a>
-          </div>
-        )}
-        <div className="sheet-bottom">
-          <Table2 size={14} /> Demo orders{" "}
-          <span>All changes stay in this browser</span>
-        </div>
+      <div className="dashboard-tabs" role="tablist" aria-label="Seller demo views">
+        <button role="tab" aria-selected={tab === "orders"} onClick={() => setTab("orders")}>Orders</button>
+        <button role="tab" aria-selected={tab === "sheet"} onClick={() => setTab("sheet")}>Sheet preview</button>
       </div>
-      {o && (
-        <>
-          <div className="notification-heading">
-            <div>
-              <Eyebrow>THE RIGHT DETAILS. THE RIGHT PEOPLE.</Eyebrow>
-              <h2>
-                A message for <em>both sides.</em>
-              </h2>
-            </div>
-            <label>
-              Preview order
-              <select value={o.id} onChange={(e) => select(e.target.value)}>
-                {orders.map((x) => (
-                  <option key={x.id} value={x.id}>
-                    {x.id} · {x.customer.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <div className="whatsapp-grid">
-            {[true, false].map((owner) => (
-              <div className="whatsapp" key={String(owner)}>
-                <div className="whatsapp-header">
-                  <span className="whatsapp-avatar">
-                    {owner ? <Utensils size={23} /> : o.customer.name[0]}
-                  </span>
-                  <div>
-                    <strong>
-                      {owner ? "Restaurant owner" : o.customer.name}
-                    </strong>
-                    <small>
-                      {owner
-                        ? "New order notification"
-                        : "Customer confirmation"}
-                    </small>
-                  </div>
-                  <MessageCircle size={23} />
-                </div>
-                <div className="whatsapp-body">
-                  <span className="message-demo">
-                    Simulated — no message sent
-                  </span>
-                  <div className="message-bubble">
-                    <p>{notification(o, owner)}</p>
-                    <span>
-                      {new Date(o.timestamp).toLocaleTimeString("en-IN", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}{" "}
-                      <Check size={12} />
-                      <Check size={12} />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
+      {tab === "orders" ? (
+        <div className="seller-workspace">
+          <section className="order-list-panel" aria-labelledby="order-list-title">
+            <div className="panel-title"><h2 id="order-list-title">Orders</h2><span>{orders.length} local {orders.length === 1 ? "order" : "orders"}</span></div>
+            {orders.length ? <div className="order-list" role="list">{orders.map((entry) => <button role="listitem" key={entry.id} className={o?.id === entry.id ? "selected" : ""} onClick={() => select(entry.id)}><span><small>Reference</small><strong>{entry.id}</strong></span><span><small>Customer</small>{entry.customer.name}</span><span><small>Time</small>{new Date(entry.timestamp).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span><span><small>Total</small>{money(entry.total)}</span><span><small>Payment</small>{entry.paymentStatus}</span><span><small>Fulfilment</small>{entry.fulfilmentStatus || entry.status}</span></button>)}</div> : <div className="empty-state compact"><ShoppingBag size={35} /><h3>No demo orders yet.</h3><p>Successful demo orders appear here. Failed payment attempts create nothing.</p><a className="text-button" href="#menu">Explore Menu <ArrowRight size={17} /></a></div>}
+          </section>
+          {o && <aside className="order-detail-panel" aria-labelledby="detail-title">
+            <div className="panel-title"><div><small>Selected order</small><h2 id="detail-title">{o.id}</h2></div><strong>{money(o.total)}</strong></div>
+            <div className="detail-status"><span>Payment · {o.paymentStatus}</span><span>Fulfilment · {o.fulfilmentStatus || o.status}</span></div>
+            <section><h3>Order summary</h3>{o.items.map((item) => <p key={item.id}>{item.quantity} × {item.name} <strong>{money(item.quantity * item.price)}</strong></p>)}<div className="detail-total"><span>Total</span><strong>{money(o.total)}</strong></div></section>
+            <section><h3>Delivery details</h3><p>{o.customer.name}<br />{o.customer.phone}<br />{o.customer.address}{o.customer.locality ? `, ${o.customer.locality}` : ""}<br />{o.customer.pincode}</p>{o.customer.instructions && <p><strong>Note:</strong> {o.customer.instructions}</p>}</section>
+            <details className="dashboard-demo-controls"><summary>Local demo actions</summary><p>These change fulfilment only. They do not accept a real order or change payment status.</p><div>{["Accepted", "Preparing", "Ready", "Delivered"].map((stage) => <button key={stage} onClick={() => updateFulfilment(stage)}>Simulate {stage.toLowerCase()}</button>)}</div></details>
+            <div className="message-preview-list">{[true, false].map((owner) => <section className="message-preview" key={String(owner)}><div><strong>{owner ? "Owner notification" : "Customer confirmation"}</strong><span>Preview generated — not sent</span></div><p>{notification(o, owner)}</p></section>)}</div>
+          </aside>}
+        </div>
+      ) : (
+        <section className="sheet-panel"><div className="sheet-title"><Table2 /><div><h2>Google Sheets Preview — simulated</h2><p>Local browser data only. No spreadsheet is connected.</p></div><span className="sheet-saved"><CheckCircle2 size={16} /> {orders.length} rows</span></div>{orders.length ? <div className="table-scroll" tabIndex={0} role="region" aria-label="Scrollable simulated order spreadsheet"><table><thead><tr><th>#</th>{columns.map((column) => <th key={column}>{column}</th>)}</tr></thead><tbody>{orders.map((entry, index) => <tr key={entry.id} className={o?.id === entry.id ? "selected-row" : ""}><td>{index + 1}</td>{[entry.id, new Date(entry.timestamp).toLocaleString("en-IN"), entry.customer.name, entry.customer.phone, entry.customer.alternate || "—", entry.customer.email || "—", entry.customer.address, entry.customer.pincode, itemText(entry), entry.customer.instructions || "—", money(entry.total), entry.method, entry.paymentStatus, entry.fulfilmentStatus || entry.status].map((cell, index) => <td key={index}>{index === 0 ? <button onClick={() => { select(entry.id); setTab("orders"); }} aria-label={`Open order ${entry.id}`}>{cell}</button> : cell}</td>)}</tr>)}</tbody></table></div> : <div className="empty-state compact"><Table2 size={35} /><h3>Sheet preview is empty.</h3><p>Successful local demo orders add one preview row each.</p></div>}<div className="sheet-bottom"><Table2 size={14} /> Preview rows are read-only <span>All changes stay in this browser</span></div></section>
       )}
-      <p className="demo-note centered">
-        Payment, spreadsheet, and WhatsApp previews are generated entirely in
-        your browser.
-      </p>
+      <p className="demo-note centered">Payments, Sheets and messages are not connected. Customer feedback remains local demo content.</p>
     </section>
   );
 }
