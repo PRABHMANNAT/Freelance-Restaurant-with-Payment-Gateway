@@ -51,6 +51,8 @@ test("order snapshots do not mutate when cart or customer changes", () => {
   assert.equal(order.paymentStatus, "Pending — COD");
   assert.equal(order.status, "Awaiting restaurant acceptance — demo");
   assert.equal(order.notificationStatus, "Not sent — demo");
+  assert.equal(order.fulfilmentStatus, "Not accepted — demo");
+  assert.equal(order.deliveryStatus, null);
   const initial = { cart: { dal: 2 }, orders: [] };
   const once = addOrderOnce(initial, order);
   const twice = addOrderOnce(once, order);
@@ -69,6 +71,7 @@ test("payment status and both messages derive from the same order", () => {
     assert.equal(o.paymentStatus, "Paid — simulated");
     assert.equal(o.status, "Awaiting restaurant acceptance — demo");
     assert.equal(o.notificationStatus, "Not sent — demo");
+    assert.equal(o.fulfilmentStatus, "Not accepted — demo");
     for (const owner of [true, false]) {
       const message = notification(o, owner);
       for (const text of [

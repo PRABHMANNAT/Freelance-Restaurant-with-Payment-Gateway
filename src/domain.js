@@ -71,6 +71,8 @@ export function createOrder(items, customer, method, id) {
     paymentStatus: method === "COD" ? "Pending — COD" : "Paid — simulated",
     status: "Awaiting restaurant acceptance — demo",
     notificationStatus: "Not sent — demo",
+    fulfilmentStatus: "Not accepted — demo",
+    deliveryStatus: null,
     estimate: "35–45 minutes (demo estimate)",
   };
 }

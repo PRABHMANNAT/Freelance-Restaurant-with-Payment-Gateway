@@ -304,7 +304,18 @@ function App() {
           />
         )}
         {route === "confirmation" && (
-          <Confirmation order={order} navigate={navigate} />
+          <Confirmation
+            order={order}
+            navigate={navigate}
+            onUpdateOrder={(id, updates) =>
+              setSaved((s) => ({
+                ...s,
+                orders: s.orders.map((existing) =>
+                  existing.id === id ? { ...existing, ...updates } : existing,
+                ),
+              }))
+            }
+          />
         )}
         {route === "dashboard" && (
           <Dashboard
