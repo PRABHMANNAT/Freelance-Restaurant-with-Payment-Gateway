@@ -347,32 +347,21 @@ function Home(props) {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <Eyebrow>ROOTED IN PUNJAB. MADE WITH LOVE.</Eyebrow>
-          <h1 tabIndex={-1}>
-            A little spice.
-            <br />A lot of <em>heart.</em>
-          </h1>
+          <p className="hero-kicker">Kale Da Dhaba · Amritsar</p>
+          <h1 tabIndex={-1}>Punjabi food. Properly enjoyed.</h1>
           <p className="hero-description">
-            Honest flavours. Generous plates. The familiar warmth of a meal at
-            Kale Da Dhaba.
+            Dal, tandoori breads and Punjabi favourites. Explore the menu at
+            Kale Da Dhaba, Amritsar.
           </p>
           <div className="hero-buttons">
             <button className="button" onClick={() => navigate("menu")}>
-              Order Now <ArrowUpRight size={19} />
+              Order online <ArrowUpRight size={19} />
             </button>
             <button className="text-button" onClick={() => navigate("menu")}>
-              Explore Menu <ArrowRight size={18} />
+              View menu <ArrowRight size={18} />
             </button>
           </div>
-          <div className="hero-proof">
-            <div className="proof-icon">
-              <Utensils size={23} />
-            </div>
-            <div>
-              <strong>Punjabi at heart, since 1994.</strong>
-              <span>Dine in. Take away. Make yourself at home.</span>
-            </div>
-          </div>
+          <p className="hero-service-note">Dine in · Takeaway · Delivery</p>
         </div>
         <div className="hero-image">
           <Image
@@ -380,49 +369,12 @@ function Home(props) {
             alt="A generous Punjabi feast of warm kulcha and rich curries"
             fetchPriority="high"
           />
-          <div className="image-shade" />
-          <div className="hero-motion" aria-hidden="true">
-            <span className="motion-ring ring-one" />
-            <span className="motion-ring ring-two" />
-            <span className="motion-spark spark-one" />
-            <span className="motion-spark spark-two" />
-          </div>
-          <span className="hero-photo-label">
-            THE GOOD STUFF, FRESH FROM OUR KITCHEN
-          </span>
-          <div className="round-stamp">
-            <small>A TASTE OF</small>
-            <span>Punjab</span>
-            <small>IN EVERY BITE</small>
-          </div>
-          <div className="hero-caption">
-            <span>
-              Made for the
-              <br />
-              <em>“one more bite.”</em>
-            </span>
-            <span className="caption-line" />
+          <div className="hero-stamp" aria-hidden="true">
+            <span>Kale Da Dhaba</span>
+            <small>Amritsar</small>
           </div>
         </div>
       </section>
-      <div className="values-strip">
-        <span>
-          <Flame />
-          Bold Punjabi flavours
-        </span>
-        <span>
-          <Leaf />
-          Something for everyone
-        </span>
-        <span>
-          <Heart />
-          Served with love
-        </span>
-        <span>
-          <ShoppingBag />
-          Your favourites, to your door
-        </span>
-      </div>
       <section className="section favourites">
         <div className="section-heading">
           <div>
