@@ -82,15 +82,26 @@ function App() {
     [storageError, setStorageError] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const toastTimer = useRef();
+  const hasMounted = useRef(false);
   useEffect(() => {
     const handler = () => {
       setRoute(currentRoute());
       setMobileNav(false);
-      window.scrollTo({ top: 0, behavior: "instant" });
+      window.scrollTo({ top: 0, behavior: "auto" });
     };
     window.addEventListener("hashchange", handler);
     return () => window.removeEventListener("hashchange", handler);
   }, []);
+  useEffect(() => {
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
+    const focusRouteHeading = window.setTimeout(() => {
+      document.querySelector("#main-content h1")?.focus({ preventScroll: true });
+    }, 0);
+    return () => window.clearTimeout(focusRouteHeading);
+  }, [route]);
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
@@ -337,7 +348,7 @@ function Home(props) {
       <section className="hero">
         <div className="hero-copy">
           <Eyebrow>ROOTED IN PUNJAB. MADE WITH LOVE.</Eyebrow>
-          <h1>
+          <h1 tabIndex={-1}>
             A little spice.
             <br />A lot of <em>heart.</em>
           </h1>
@@ -571,7 +582,7 @@ function MenuPage(props) {
     <>
       <section className="page-intro">
         <Eyebrow>FRESH FROM OUR KITCHEN</Eyebrow>
-        <h1>
+        <h1 tabIndex={-1}>
           Follow your <em>cravings.</em>
         </h1>
         <p>
@@ -657,7 +668,7 @@ function About({ navigate }) {
     <>
       <section className="page-intro">
         <Eyebrow>OUR TABLE, YOUR HAPPY PLACE</Eyebrow>
-        <h1>
+        <h1 tabIndex={-1}>
           A tradition of <em>good taste.</em>
         </h1>
         <p>Authentic Punjabi flavours. Warm welcomes. Since 1994.</p>
@@ -731,7 +742,7 @@ function Gallery() {
     <>
       <section className="page-intro">
         <Eyebrow>A FEAST FOR YOUR FEED</Eyebrow>
-        <h1>
+        <h1 tabIndex={-1}>
           First, we eat <em>with our eyes.</em>
         </h1>
         <p>A little glimpse of the good things from our kitchen.</p>
@@ -771,7 +782,7 @@ function Contact({ navigate }) {
     <>
       <section className="page-intro">
         <Eyebrow>THERE’S ALWAYS ROOM AT OUR TABLE</Eyebrow>
-        <h1>
+        <h1 tabIndex={-1}>
           Come for a bite.
           <br />
           <em>Stay a little longer.</em>
@@ -879,7 +890,7 @@ function Reviews({ reviews, orders, order, onSubmit }) {
     <>
       <section className="page-intro">
         <Eyebrow>WORDS THAT WARM OUR HEARTS</Eyebrow>
-        <h1>
+        <h1 tabIndex={-1}>
           Good food. <em>Better memories.</em>
         </h1>
         <p>A little love from around the table.</p>
@@ -1317,7 +1328,7 @@ function Checkout({
     return (
       <section className="section empty-state">
         <ShoppingBag size={44} />
-        <h1>
+        <h1 tabIndex={-1}>
           Your bag is <em>waiting.</em>
         </h1>
         <p>Add your favourites before checking out.</p>
@@ -1359,7 +1370,7 @@ function Checkout({
       </button>
       <div className="checkout-title">
         <Eyebrow>ALMOST AT YOUR DOOR</Eyebrow>
-        <h1>
+        <h1 tabIndex={-1}>
           Good food is <em>on the way.</em>
         </h1>
       </div>
@@ -1629,7 +1640,7 @@ function Confirmation({ order: o, navigate }) {
     return (
       <section className="section empty-state">
         <ShoppingBag size={40} />
-        <h1>
+        <h1 tabIndex={-1}>
           No orders <em>just yet.</em>
         </h1>
         <button className="button" onClick={() => navigate("menu")}>
@@ -1644,7 +1655,7 @@ function Confirmation({ order: o, navigate }) {
           <Check size={35} />
         </span>
         <Eyebrow>A LITTLE HAPPINESS IS ON ITS WAY</Eyebrow>
-        <h1>
+        <h1 tabIndex={-1}>
           Thank you, <em>{o.customer.name.split(" ")[0]}.</em>
         </h1>
         <p>Your demo order is confirmed. Let the cravings count down.</p>
@@ -1738,7 +1749,7 @@ function Dashboard({ orders, reviews, onReset, onSelect }) {
       <div className="dashboard-heading">
         <div>
           <Eyebrow>BEHIND THE COUNTER</Eyebrow>
-          <h1>
+          <h1 tabIndex={-1}>
             Demo <em>Dashboard.</em>
           </h1>
           <p>
