@@ -788,9 +788,17 @@ function Contact({ navigate }) {
   );
 }
 function ReviewCard({ review: r }) {
+  const ratingLabel = `${r.rating} ${r.rating === 1 ? "star" : "stars"}`;
+  const metadata = r.sample
+    ? "Example review · Demo content"
+    : `Demo order · ${new Date(r.timestamp).toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })}`;
   return (
     <article className="review-card">
-      <div className="stars" aria-label={`${r.rating} out of 5 stars`}>
+      <div className="stars" aria-label={`${ratingLabel} out of 5`}>
         {[1, 2, 3, 4, 5].map((n) => (
           <Star
             key={n}
@@ -801,32 +809,40 @@ function ReviewCard({ review: r }) {
       </div>
       <blockquote>“{r.text}”</blockquote>
       <div className="review-author">
-        <span className="avatar">{r.name.slice(0, 1)}</span>
         <div>
           <strong>{r.name}</strong>
-          <small>
-            {r.sample
-              ? "Sample testimonial · Demo content"
-              : `Demo order · ${r.orderId}`}
-          </small>
+          <small>{metadata}</small>
         </div>
       </div>
     </article>
   );
 }
 function Reviews({ reviews, orders, order, onSubmit }) {
-  const [selected, setSelected] = useState(order?.id || ""),
-    [rating, setRating] = useState(5),
+  const [rating, setRating] = useState(null),
     [text, setText] = useState(""),
     [done, setDone] = useState(false),
     [error, setError] = useState("");
   const eligible = orders.filter(
-    (o) => !reviews.some((r) => r.orderId === o.id),
+    (o) =>
+      o.deliveryStatus === "Delivered — simulated" &&
+      !reviews.some((r) => r.orderId === o.id),
   );
-  const chosen = eligible.find((o) => o.id === selected) || eligible[0];
+  const chosen = eligible.find((o) => o.id === order?.id) || eligible[0];
+  function chooseRating(event, value) {
+    const keys = ["ArrowRight", "ArrowUp", "ArrowLeft", "ArrowDown", "Home", "End"];
+    if (!keys.includes(event.key)) return;
+    event.preventDefault();
+    const next = event.key === "Home" ? 1 : event.key === "End" ? 5 : Math.min(5, Math.max(1, value + (event.key === "ArrowRight" || event.key === "ArrowUp" ? 1 : -1)));
+    setRating(next);
+    document.getElementById(`rating-${next}`)?.focus();
+  }
   function submit(e) {
     e.preventDefault();
     if (!chosen) return;
+    if (!rating) {
+      setError("Choose a rating before submitting.");
+      return;
+    }
     if (text.trim().length < 5) {
       setError("Tell us a little more — at least 5 characters.");
       return;
@@ -841,18 +857,16 @@ function Reviews({ reviews, orders, order, onSubmit }) {
     });
     setDone(true);
     setText("");
+    setRating(null);
     setError("");
   }
   return (
     <>
-      <section className="page-intro">
-        <Eyebrow>WORDS THAT WARM OUR HEARTS</Eyebrow>
-        <h1 tabIndex={-1}>
-          Good food. <em>Better memories.</em>
-        </h1>
-        <p>A little love from around the table.</p>
+      <section className="page-intro reviews-intro">
+        <h1 tabIndex={-1}>From our guests.</h1>
+        <p>Example reviews are shown for this presentation. New feedback stays in this local demo.</p>
       </section>
-      <section className="section">
+      <section className="section reviews-page">
         <div className="review-grid">
           {[...reviews, ...sampleReviews].map((r) => (
             <ReviewCard key={r.id} review={r} />
@@ -860,50 +874,32 @@ function Reviews({ reviews, orders, order, onSubmit }) {
         </div>
         <div className="review-form-wrap">
           <div>
-            <Eyebrow>HOW WAS YOUR EXPERIENCE?</Eyebrow>
-            <h2>
-              Your next helping?
-              <br />
-              <em>A little feedback.</em>
-            </h2>
-            <p>Reviews are saved locally and linked to your demo order.</p>
+            <h2>How was your meal?</h2>
+            <p>Your feedback is linked to this delivered demo order and saved only in this browser.</p>
           </div>
           {done ? (
             <div className="success-panel" role="status">
               <CheckCircle2 size={36} />
-              <h3>Thank you for the love!</h3>
-              <p>Your review is now part of this local demo.</p>
-              {eligible.length > 0 && (
-                <button className="text-button" onClick={() => setDone(false)}>
-                  Review another order <ArrowRight size={17} />
-                </button>
-              )}
+              <h3>Feedback saved</h3>
+              <p>Thanks for sharing your feedback. It is saved only in this local demo.</p>
             </div>
           ) : chosen ? (
             <form onSubmit={submit} className="review-form">
-              <label>
-                Demo order
-                <select
-                  value={chosen.id}
-                  onChange={(e) => setSelected(e.target.value)}
-                >
-                  {eligible.map((o) => (
-                    <option key={o.id} value={o.id}>
-                      {o.id} · {o.customer.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <p className="review-order-reference">For demo order <strong>{chosen.id}</strong></p>
               <fieldset>
-                <legend>Your rating</legend>
-                <div className="rating-picker">
+                <legend>Your rating <span aria-hidden="true">(required)</span></legend>
+                <div className="rating-picker" role="radiogroup" aria-label="Your rating">
                   {[1, 2, 3, 4, 5].map((n) => (
                     <button
                       type="button"
                       key={n}
-                      aria-label={`${n} stars`}
-                      aria-pressed={rating === n}
+                      id={`rating-${n}`}
+                      role="radio"
+                      aria-label={`${n} ${n === 1 ? "star" : "stars"}`}
+                      aria-checked={rating === n}
+                      tabIndex={rating === null ? (n === 1 ? 0 : -1) : rating === n ? 0 : -1}
                       onClick={() => setRating(n)}
+                      onKeyDown={(event) => chooseRating(event, n)}
                     >
                       <Star
                         fill={n <= rating ? "currentColor" : "none"}
@@ -919,7 +915,7 @@ function Reviews({ reviews, orders, order, onSubmit }) {
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   maxLength={700}
-                  placeholder="Tell us what made your meal special…"
+                  placeholder="Tell us what worked well and what we could improve."
                   aria-describedby={error ? "review-error" : undefined}
                 />
               </label>
@@ -936,18 +932,16 @@ function Reviews({ reviews, orders, order, onSubmit }) {
             <div className="success-panel">
               <Heart size={32} />
               <h3>
-                {orders.length
+                {orders.some((o) => o.deliveryStatus === "Delivered — simulated")
                   ? "You’re all caught up."
-                  : "Your table is waiting."}
+                  : "A delivered demo order is needed."}
               </h3>
               <p>
-                {orders.length
-                  ? "Each demo order can receive one review. Thank you for sharing yours."
-                  : "Place a demo order to leave your own review."}
+                {orders.some((o) => o.deliveryStatus === "Delivered — simulated")
+                  ? "Each delivered demo order can receive one review."
+                  : "Open a demo order confirmation and use Simulate delivered before leaving feedback."}
               </p>
-              <a className="button" href="#menu">
-                Explore Menu <ArrowRight size={18} />
-              </a>
+              {!orders.length && <a className="button" href="#menu">Explore Menu <ArrowRight size={18} /></a>}
             </div>
           )}
         </div>
