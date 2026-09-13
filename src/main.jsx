@@ -756,53 +756,42 @@ function Gallery() {
   );
 }
 function Contact({ navigate }) {
+  const visit = restaurant.visit;
   return (
     <>
-      <section className="page-intro">
-        <Eyebrow>THERE’S ALWAYS ROOM AT OUR TABLE</Eyebrow>
-        <h1 tabIndex={-1}>
-          Come for a bite.
-          <br />
-          <em>Stay a little longer.</em>
-        </h1>
-        <p>Dine in, take away, or enjoy a little Punjabi comfort at home.</p>
+      <section className="page-intro contact-intro">
+        <h1 tabIndex={-1}>Find us in Amritsar.</h1>
+        <p>Visit details will appear here once they are confirmed by Kale Da Dhaba.</p>
       </section>
-      <section className="section contact-grid">
-        <div className="contact-image">
-          <Image src={photos.hero} alt="A Punjabi meal to share" />
-        </div>
-        <div className="contact-info">
-          <h2>
-            Let’s get <em>together.</em>
-          </h2>
-          {[
-            [MapPin, "Find us", restaurant.visit.address],
-            [Smartphone, "Give us a call", restaurant.visit.phone],
-            [Clock, "Opening hours", restaurant.visit.hours],
-          ].map(([Icon, title, text]) => (
-            <div className="contact-row" key={title}>
-              <Icon />
-              <div>
-                <strong>{title}</strong>
-                <p>{text}</p>
+      <section className="section contact-visit-grid">
+        <div className="contact-info visit-details">
+          <h2>Plan your visit.</h2>
+          {visit.isVerified ? (
+            <>
+              {[[MapPin, "Address", visit.address], [Clock, "Opening hours", visit.hours], [Smartphone, "Phone", visit.phone]].map(([Icon, title, text]) => (
+                <div className="contact-row" key={title}>
+                  <Icon />
+                  <div><strong>{title}</strong><p>{text}</p></div>
+                </div>
+              ))}
+              <div className="visit-actions">
+                {visit.directionsUrl && <a className="button" href={visit.directionsUrl} target="_blank" rel="noreferrer"><MapPin size={17} /> Get directions</a>}
+                {visit.phone && <a className="button outline" href={`tel:${visit.phone.replace(/\s+/g, "")}`}><Smartphone size={17} /> Call the dhaba</a>}
+                {visit.whatsappUrl && <a className="text-button" href={visit.whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle size={17} /> WhatsApp the dhaba</a>}
               </div>
+            </>
+          ) : (
+            <div className="visit-pending" role="note">
+              <MapPin size={21} />
+              <p>Address, opening hours, phone number, directions and business WhatsApp contact are awaiting owner verification. They are intentionally not shown in this demo.</p>
             </div>
-          ))}
-          <a
-            className="text-button"
-            href={restaurant.instagram}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Instagram size={19} /> Follow @kaledadhaba{" "}
-            <ArrowUpRight size={17} />
-          </a>
-          <p className="demo-note">
-            Contact details are placeholders awaiting restaurant verification.
-          </p>
-          <button className="button" onClick={() => navigate("menu")}>
-            Order a little happiness <ArrowRight size={18} />
-          </button>
+          )}
+          <button className="text-button visit-menu-link" onClick={() => navigate("menu")}>Explore the menu <ArrowRight size={17} /></button>
+        </div>
+        <div className="visit-media-placeholder" role="img" aria-label="Storefront and map preview awaiting owner-supplied address and authorised exterior photograph">
+          <MapPin size={32} />
+          <strong>Storefront & directions preview</strong>
+          <p>A verified address and authorised exterior photograph are needed before a map or location image can be shown.</p>
         </div>
       </section>
     </>
