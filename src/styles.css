@@ -226,11 +226,17 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22px 5.6%;
+  width: min(1240px, calc(100% - 48px));
+  margin: 15px auto 0;
+  padding: 15px 22px;
   gap: 25px;
-  border-bottom: 1px solid #e7e6de;
-  background: var(--cream);
-  position: relative;
+  border: 1px solid #e4e4d7;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--cream) 92%, transparent);
+  box-shadow: 0 14px 38px rgba(41, 47, 29, 0.1);
+  backdrop-filter: blur(18px);
+  position: sticky;
+  top: 14px;
   z-index: 30;
 }
 .brand {
