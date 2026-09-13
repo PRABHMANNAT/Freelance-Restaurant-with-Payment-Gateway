@@ -1027,9 +1027,7 @@ function Footer({ navigate }) {
             </span>
           </a>
           <p>
-            A little spice. A lot of heart.
-            <br />
-            Punjabi flavours, since 1994.
+            Punjabi flavours, shared with generous hospitality in {restaurant.location}.
           </p>
           <a
             className="social-link"
@@ -1042,28 +1040,29 @@ function Footer({ navigate }) {
           </a>
         </div>
         <div>
-          <h4>Pull up a chair</h4>
+          <h4>Restaurant</h4>
           <a href="#about">Our story</a>
           <a href="#menu">Explore menu</a>
           <a href="#reviews">Reviews</a>
           <a href="#gallery">Gallery</a>
         </div>
         <div>
-          <h4>Find your way</h4>
-          <p>{restaurant.address}</p>
-          <p>{restaurant.phone}</p>
+          <h4>Visit</h4>
+          <p>{restaurant.visit.address}</p>
+          <p>{restaurant.visit.phone}</p>
+          <p>{restaurant.visit.hours}</p>
           <a href="#contact">
             Contact details <ArrowUpRight size={14} />
           </a>
         </div>
         <div>
-          <h4>Come hungry</h4>
-          <p>{restaurant.hours}</p>
-          <p>Dine in · Takeaway · Delivery</p>
+          <h4>Order</h4>
+          <a href="#menu">Order online</a>
+          <a href="#contact">Dine in & takeaway</a>
+          <p>{restaurant.services}</p>
           <span className="footer-demo">
-            Frontend demonstration
-            <br />
-            No real orders or payments
+            {restaurant.authoring.demoDisclosure}
+            <br />No real orders, payments or messages are sent.
           </span>
         </div>
       </div>
