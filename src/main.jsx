@@ -525,15 +525,9 @@ function MenuPage(props) {
   );
   return (
     <>
-      <section className="page-intro">
-        <Eyebrow>FRESH FROM OUR KITCHEN</Eyebrow>
-        <h1 tabIndex={-1}>
-          Follow your <em>cravings.</em>
-        </h1>
-        <p>
-          A proper Punjabi feast, a quick bite, or something sweet. Make it
-          yours.
-        </p>
+      <section className="menu-intro">
+        <h1 tabIndex={-1}>What are you having?</h1>
+        <p>Choose your dishes. Build your order.</p>
       </section>
       <section className="section menu-section">
         <div className="menu-toolbar">
@@ -544,9 +538,19 @@ function MenuPage(props) {
               placeholder="What are you craving?"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape" && query) {
+                  e.preventDefault();
+                  setQuery("");
+                }
+              }}
             />
             {query && (
-              <button aria-label="Clear search" onClick={() => setQuery("")}>
+              <button
+                type="button"
+                aria-label="Clear search"
+                onClick={() => setQuery("")}
+              >
                 <X size={17} />
               </button>
             )}
@@ -564,21 +568,23 @@ function MenuPage(props) {
             ))}
           </div>
         </div>
-        <div className="category-tabs">
-          {categories.map((c) => (
-            <button
-              key={c}
-              className={c === category ? "active" : ""}
-              aria-pressed={c === category}
-              onClick={() => setCategory(c)}
-            >
-              {c}
-            </button>
-          ))}
+        <div className="menu-category-wrap">
+          <div className="category-tabs" aria-label="Menu categories">
+            {categories.map((c) => (
+              <button
+                key={c}
+                className={c === category ? "active" : ""}
+                aria-pressed={c === category}
+                onClick={() => setCategory(c)}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="menu-count">
-          <span>{filtered.length} delicious possibilities</span>
-          <span>Demo menu · Sample prices · Illustrative photography</span>
+          <span aria-live="polite">{filtered.length} dishes</span>
+          <span>{restaurant.menuDisclosure}</span>
         </div>
         {filtered.length ? (
           <div className="food-grid">
@@ -599,7 +605,7 @@ function MenuPage(props) {
                 setCategory("All dishes");
               }}
             >
-              Clear filters
+              Reset menu
             </button>
           </div>
         )}
