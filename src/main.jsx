@@ -181,7 +181,7 @@ function App() {
         <a href="#home" className="brand" aria-label="Kale Da Dhaba home">
           <img src={photos.logo} alt="Kale Da Dhaba logo" />
           <span>
-            KALE DA DHABA<small>TASTE YOU TRUST · SINCE 1994</small>
+            KALE DA DHABA<small>{restaurant.tagline}</small>
           </span>
         </a>
         <nav
@@ -220,7 +220,7 @@ function App() {
             className="button small nav-order"
             onClick={() => navigate("menu")}
           >
-            Order Now <ArrowUpRight size={16} />
+            Order online <ArrowUpRight size={16} />
           </button>
           <button
             className="icon-button mobile-toggle"
