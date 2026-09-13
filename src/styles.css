@@ -333,23 +333,39 @@ button:active {
   overflow: hidden;
 }
 .hero-copy {
-  padding: 77px 11.5% 55px;
+  padding: 84px 11.5% 55px;
+  background: radial-gradient(circle at 8% 8%, #ffffff 0, transparent 33%), #f8f6ee;
 }
 .hero-copy .eyebrow {
-  font-size: 10px;
+  display: inline-flex;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #d9dec0;
+  background: #f0f3df;
+  font-size: 9px;
+  letter-spacing: 0.16em;
   white-space: nowrap;
   margin-bottom: 25px;
 }
-.hero h1 {
-  font-size: clamp(54px, 5.2vw, 82px);
-  line-height: 1.08;
-  letter-spacing: -2.8px;
+.hero-copy .eyebrow > span {
+  width: 12px;
 }
+.hero h1 {
+  max-width: 600px;
+  font-size: clamp(58px, 5.4vw, 86px);
+  line-height: 0.99;
+  letter-spacing: -0.06em;
+  color: #21291c;
+  text-wrap: balance;
+}
+.hero h1 em { color: #73782b; }
 .hero-description {
-  font-size: 15px;
-  max-width: 350px;
-  color: #727367;
-  margin-top: 25px;
+  font-size: 16px;
+  max-width: 390px;
+  color: #62695a;
+  margin-top: 28px;
+  line-height: 1.7;
 }
 .hero-buttons {
   display: flex;
