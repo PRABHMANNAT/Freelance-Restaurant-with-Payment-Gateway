@@ -666,18 +666,24 @@ button:active {
 .add-button {
   display: flex;
   align-items: center;
-  gap: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--olive);
-  border: 1px solid #d4d6bf;
-  border-radius: 5px;
-  padding: 8px 13px;
-  background: #f9f9ef;
-  min-height: 36px;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #fdfced;
+  border: 1px solid #2e3718;
+  border-radius: 999px;
+  padding: 6px 7px 6px 13px;
+  background: #384317;
+  min-height: 39px;
+  box-shadow: 0 5px 11px rgba(54,64,19,.2);
 }
+.add-button svg { padding: 5px; width: 25px; height: 25px; border-radius: 50%; background: #e6e889; color: #3f4918; }
 .add-button:hover {
-  background: #e9edd5;
+  background: #525d21;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(54,64,19,.26);
 }
 .demo-note {
   display: flex;

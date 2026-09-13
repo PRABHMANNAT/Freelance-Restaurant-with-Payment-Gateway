@@ -515,7 +515,7 @@ function FoodCard({ dish: d, cart, add, change }) {
               onClick={() => add(d.id)}
               aria-label={`Add ${d.name} to cart`}
             >
-              Add <Plus size={16} />
+              Add to bag <Plus size={15} />
             </button>
           )}
         </div>
