@@ -7,6 +7,16 @@ export const photos = {
   pizza: asset("022124.webp"),
   drink: asset("022206.webp"),
 };
+// These are supplied food images. None documents a verified storefront, team,
+// seating area, or kitchen action, so those subjects are intentionally absent.
+export const galleryAssets = [
+  { file: "022214.webp", alt: "Plated Punjabi dishes and tandoori breads", caption: "Punjabi dishes, ready to share" },
+  { file: "022124.webp", alt: "Vegetable cheese pizza on a plate", caption: "A cheese-topped plate" },
+  { file: "022037.webp", alt: "Watermelon cooler with fresh mint", caption: "A chilled watermelon cooler" },
+  { file: "022118.webp", alt: "Golden crisp vegetable cigar rolls", caption: "Crisp vegetable rolls" },
+  { file: "022258.webp", alt: "Buttered Amritsari kulcha on a plate", caption: "Buttered kulcha" },
+  { file: "022017.webp", alt: "Paneer tikka wrap with fresh vegetables", caption: "A paneer tikka wrap" },
+].map((image) => ({ ...image, src: asset(image.file), source: "Supplied project food photography" }));
 export const restaurant = {
   name: "Kale Da Dhaba",
   tagline: "Taste you trust.",
@@ -17,12 +27,16 @@ export const restaurant = {
     address: "Address awaiting owner verification",
     phone: "Phone number awaiting owner verification",
     hours: "Opening hours awaiting owner verification",
+    isVerified: false,
+    directionsUrl: null,
+    whatsappUrl: null,
   },
   authoring: {
     pendingVerification: [
       "Address, phone number and opening hours",
       "Founding-year claim and extended history",
       "Production menu, pricing and testimonials",
+      "Front signboard, owner/team, kitchen action, signature plated dish and seating photography",
     ],
     demoDisclosure:
       "Demo content only. Please verify restaurant details before publishing.",
