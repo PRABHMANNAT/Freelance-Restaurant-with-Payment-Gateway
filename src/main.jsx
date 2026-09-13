@@ -611,66 +611,38 @@ function MenuPage(props) {
 function About({ navigate }) {
   return (
     <>
-      <section className="page-intro">
-        <Eyebrow>OUR TABLE, YOUR HAPPY PLACE</Eyebrow>
-        <h1 tabIndex={-1}>
-          A tradition of <em>good taste.</em>
-        </h1>
-        <p>Authentic Punjabi flavours. Warm welcomes. Since 1994.</p>
+      <section className="about-intro">
+        <p className="section-label">About</p>
+        <h1 tabIndex={-1}>A table in Amritsar.</h1>
+        <p>{restaurant.about.interimIntroduction}</p>
       </section>
-      <section className="home-story about-story">
-        <div className="story-photo">
+      <section className="about-editorial">
+        <figure className="about-photo">
           <Image
             src={photos.story}
-            alt="A warm kulcha being finished with butter"
+            alt="Close-up of a buttered kulcha served on a plate"
+            loading="lazy"
           />
-          <span className="photo-note">Rooted in Punjab.</span>
-        </div>
-        <div className="story-copy">
-          <Eyebrow>THE KALE DA DHABA WAY</Eyebrow>
-          <h2>
-            Food from the heart.
-            <br />
-            <em>Memories for the table.</em>
-          </h2>
-          <p>{restaurant.story}</p>
+          <figcaption>
+            Current permitted food photograph. A kitchen, team or frontage
+            photograph is awaiting owner approval.
+          </figcaption>
+        </figure>
+        <div className="about-copy">
           <p>
-            There’s a reason the simplest meals stay with us. A naan torn by
-            hand, a bowl passed around, the last spoonful of your favourite dal.
-            That’s the feeling we want every plate to bring.
+            The current demo can introduce Kale Da Dhaba as a Punjabi restaurant
+            in Amritsar. It does not yet make claims about the restaurant’s
+            founding, team, recipes or kitchen practice.
           </p>
-          <p className="demo-note">{restaurant.storyNote}</p>
+          <p>
+            Once the owner supplies an approved history and image, this space can
+            hold a factual story of the restaurant and its table.
+          </p>
           <button className="button" onClick={() => navigate("menu")}>
-            Find your favourite <ArrowRight size={18} />
+            Explore the menu <ArrowRight size={18} />
           </button>
         </div>
       </section>
-      <div className="section about-values">
-        {[
-          [
-            Flame,
-            "Full of flavour",
-            "Warming spices, rich gravies, and the comfort of Punjabi cooking.",
-          ],
-          [
-            Utensils,
-            "A plate for everyone",
-            "Family favourites and a few new cravings to bring to the table.",
-          ],
-          [
-            Heart,
-            "Hospitality at heart",
-            "Come for the food. Stay for the feeling of being welcome.",
-          ],
-        ].map(([Icon, title, text]) => (
-          <article key={title}>
-            <Icon />
-            <h3>{title}</h3>
-            <p>{text}</p>
-          </article>
-        ))}
-      </div>
-      <OrderBanner navigate={navigate} />
     </>
   );
 }
