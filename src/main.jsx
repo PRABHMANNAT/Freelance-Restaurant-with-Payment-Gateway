@@ -74,15 +74,15 @@ function Image({ src, alt, ...props }) {
     />
   );
 }
-function CheckoutHeader({ navigate }) {
+function CheckoutHeader({ navigate, disabled }) {
   return (
     <header className="checkout-header">
-      <a href="#home" className="brand" aria-label="Kale Da Dhaba home">
+      <a href="#home" className="brand" aria-label="Kale Da Dhaba home" onClick={(e) => disabled && e.preventDefault()}>
         <img src={photos.logo} alt="Kale Da Dhaba logo" />
         <span>KALE DA DHABA<small>{restaurant.tagline}</small></span>
       </a>
       <div>
-        <button className="text-button" onClick={() => navigate("menu")}>
+        <button className="text-button" disabled={disabled} onClick={() => navigate("menu")}>
           <ArrowLeft size={17} /> Back to menu
         </button>
         <span className="demo-pill">Demo</span>
@@ -96,19 +96,25 @@ function App() {
     [cartOpen, setCartOpen] = useState(false),
     [mobileNav, setMobileNav] = useState(false),
     [toast, setToast] = useState(""),
-    [storageError, setStorageError] = useState(false);
+    [storageError, setStorageError] = useState(false),
+    [checkoutProcessing, setCheckoutProcessing] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const toastTimer = useRef();
   const hasMounted = useRef(false);
   useEffect(() => {
     const handler = () => {
-      setRoute(currentRoute());
+      const nextRoute = currentRoute();
+      if (checkoutProcessing && nextRoute !== "checkout") {
+        location.hash = "checkout";
+        return;
+      }
+      setRoute(nextRoute);
       setMobileNav(false);
       window.scrollTo({ top: 0, behavior: "auto" });
     };
     window.addEventListener("hashchange", handler);
     return () => window.removeEventListener("hashchange", handler);
-  }, []);
+  }, [checkoutProcessing]);
   useEffect(() => {
     if (!hasMounted.current) {
       hasMounted.current = true;
@@ -132,7 +138,8 @@ function App() {
     clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToast(""), 3200);
   }
-  function navigate(to) {
+  function navigate(to, force = false) {
+    if (checkoutProcessing && !force && to !== "checkout") return;
     if (route === to) window.scrollTo({ top: 0, behavior: "smooth" });
     location.hash = to;
     setMobileNav(false);
@@ -167,13 +174,14 @@ function App() {
     navigate("checkout");
   }
   function complete(order) {
+    setCheckoutProcessing(false);
     setSaved((s) =>
       s.orders.some((o) => o.id === order.id)
         ? s
         : { ...s, cart: {}, orders: [order, ...s.orders] },
     );
     setSelectedOrder(order.id);
-    navigate("confirmation");
+    navigate("confirmation", true);
   }
   const order =
     saved.orders.find((o) => o.id === selectedOrder) || saved.orders[0];
@@ -205,7 +213,7 @@ function App() {
         </span>
         <span className="demo-pill">Demo mode</span>
       </div>}
-      {route === "checkout" ? <CheckoutHeader navigate={navigate} /> : <header className="header">
+      {route === "checkout" ? <CheckoutHeader navigate={navigate} disabled={checkoutProcessing} /> : <header className="header">
         <a href="#home" className="brand" aria-label="Kale Da Dhaba home">
           <img src={photos.logo} alt="Kale Da Dhaba logo" />
           <span>
@@ -295,6 +303,7 @@ function App() {
             customer={saved.customer}
             setCustomer={(customer) => setSaved((s) => ({ ...s, customer }))}
             onComplete={complete}
+            onProcessingChange={setCheckoutProcessing}
           />
         )}
         {route === "confirmation" && (
@@ -1209,6 +1218,7 @@ function Checkout({
   setCustomer,
   onComplete,
   navigate,
+  onProcessingChange,
 }) {
   const [step, setStep] = useState(1),
     [errors, setErrors] = useState({}),
@@ -1221,6 +1231,10 @@ function Checkout({
       `KDD-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 4).toUpperCase()}`,
     );
   useEffect(() => () => clearTimeout(timer.current), []);
+  useEffect(() => {
+    onProcessingChange(processing);
+    return () => onProcessingChange(false);
+  }, [processing, onProcessingChange]);
   function next(e) {
     e.preventDefault();
     const errs = validateCustomer(customer);
