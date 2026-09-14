@@ -210,7 +210,6 @@ function App() {
           GOOD FOOD. GREAT COMPANY.{" "}
           <span className="announcement-extra">A LITTLE PUNJABI LOVE.</span>
         </span>
-        <span className="demo-pill">Demo mode</span>
       </div>}
       {route === "checkout" ? <CheckoutHeader navigate={navigate} disabled={checkoutProcessing} /> : <header className="header">
         <a href="#home" className="brand" aria-label="Kale Da Dhaba home">
