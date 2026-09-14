@@ -2828,6 +2828,18 @@ td button {
   border-radius: 9px;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
 }
+
+/* Featured dish labels stay legible without competing with the photography. */
+.featured-grid .food-tag {
+  background: rgba(255, 252, 245, 0.96);
+  border-color: rgba(36, 42, 34, 0.16);
+  color: #242a22;
+  box-shadow: none;
+}
+.featured-grid .food-tag:before {
+  background: var(--olive);
+  box-shadow: 0 0 0 3px rgba(89, 100, 56, 0.15);
+}
 @media (max-width: 560px) {
   h1 {
     font-size: 43px;
