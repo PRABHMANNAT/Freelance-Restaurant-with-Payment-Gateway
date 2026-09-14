@@ -1,17 +1,53 @@
-# Kale Da Dhaba — Restaurant ordering demo
+# Kale Da Dhaba — Local Ordering Showcase
 
-A responsive, frontend-only client presentation built with React 19, Tailwind CSS 4, Vite, and Lucide icons. The design follows Kale Da Dhaba's olive monogram and food photography, with locally hosted images and fonts.
+> **Suggested project name:** Kale Da Dhaba — Local Ordering Showcase. It describes the project as a polished client presentation while making its browser-local ordering scope clear.
 
-## Run
+A responsive React and Vite demonstration for **Kale Da Dhaba, Amritsar**. It presents the complete ordering journey—from browsing food to a simulated payment, receipt, local seller preview, and feedback—without a backend or external service.
 
-Requires Node.js 20.19+ or 22.12+.
+**[Watch the client walkthrough](docs/media/kale-da-dhaba-walkthrough.mp4)** · **[Open asset credits](public/credits.html)**
+
+<video controls muted playsinline poster="docs/media/menu-overview.png" width="100%">
+  <source src="docs/media/kale-da-dhaba-walkthrough.mp4" type="video/mp4" />
+  Your browser does not support embedded video. <a href="docs/media/kale-da-dhaba-walkthrough.mp4">Watch the walkthrough video</a>.
+</video>
+
+## What the demo covers
+
+| Area | Included behaviour |
+| --- | --- |
+| Home | Food-led hero, featured dishes, restaurant teaser, sample review preview, and direct menu actions. |
+| Menu | Search, category and diet intersections, quantities, mobile cart summary, and a 16-item sample menu. |
+| Cart | Accessible drawer, quantity controls, persisted basket, central totals, and visible demo delivery fee. |
+| Checkout | Delivery validation, fictional sample details, configurable demo pincode serviceability, and editable cart. |
+| Payment | COD, UPI, and Card simulations with processing, failure, cancellation, pending, retry, and duplicate-order protection. |
+| Confirmation | Saved order snapshot, demo receipt, order-reference copy action, illustrative estimate, and simulated fulfilment stages. |
+| Seller demo | Local order list, detail panel, local fulfilment controls, message previews, and a secondary Sheets-style preview. |
+| Reviews | Clearly labelled example reviews plus local, post-delivery feedback with accessible star selection. |
+
+## Presentation gallery
+
+<p align="center">
+  <img src="docs/media/menu-overview.png" alt="Kale Da Dhaba menu showing category filters, food cards and ordering actions" width="49%" />
+  <img src="docs/media/menu-catalogue.png" alt="Kale Da Dhaba menu catalogue showing additional food cards" width="49%" />
+</p>
+<p align="center">
+  <img src="docs/media/about-desktop.png" alt="Desktop About page with the Amritsar introduction and food photograph" width="49%" />
+  <img src="docs/media/about-mobile.png" alt="Compact About page layout for a narrower viewport" width="24%" />
+  <img src="docs/media/cart-drawer.png" alt="Accessible order drawer with quantities, delivery charge and checkout total" width="24%" />
+</p>
+
+The screenshots and video above were supplied for this repository’s client walkthrough. They are stored in [`docs/media`](docs/media/) so the README remains portable with the project.
+
+## Run locally
+
+**Requirements:** Node.js `20.19+` or `22.12+`.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open the URL printed by Vite. For a production build:
+Open the local URL printed by Vite. To run the verification suite and make a production build:
 
 ```sh
 npm test
@@ -19,41 +55,55 @@ npm run build
 npm run preview
 ```
 
-The `dist/` directory can be served by any static host. Relative asset paths and hash navigation support subdirectory hosting, including GitHub Pages. No server, API key, database, account, or payment service is required.
+The generated `dist/` folder is static-host ready. Hash navigation and relative asset URLs support subdirectory deployments such as GitHub Pages.
 
-## Walkthrough
+## Client walkthrough
 
-1. Open Home, then Explore Menu.
-2. Search for paneer, select Veg, and add Paneer Lababdar.
-3. Clear the search, choose Breads, and add Garlic Butter Naan.
-4. Open Cart and increase naan to two. The total is ₹500 including ₹40 demo delivery.
-5. Proceed to Checkout. Click Continue with empty fields to demonstrate validation, then Fill Sample Details.
-6. Continue to Payment. Choose UPI, simulate failure, then simulate success. Card has the same failure/retry flow; COD records Pending — COD.
-7. Show the order confirmation, customer details, items, payment status, and illustrative estimate.
-8. Use the discreet Demo Dashboard link in the footer to show the matching spreadsheet row and owner/customer WhatsApp previews. The order selector switches all previews together.
-9. Go to Reviews, select the order, rate it, and submit a written review. The review appears locally and cannot be duplicated.
-10. Refresh to demonstrate persistence. Use Reset Demo in the dashboard to prepare another recording.
+1. Start on **Home**, select **Order online** or **View menu**.
+2. On **Menu**, search a dish, try Veg or Non-Veg, switch categories, and add dishes.
+3. Open **Cart**, adjust quantities, confirm the subtotal and delivery charge, then continue to checkout.
+4. On **Delivery details**, submit empty fields to show validation, then use **Fill Sample Details** for fictional test information.
+5. Choose a payment method. Show a UPI/Card failure then retry, or record a COD order with **Pending — COD**.
+6. On **Demo order confirmed**, show the saved receipt, copied order reference, and illustrative delivery estimate.
+7. Expand **Demo controls** to simulate fulfilment. Select **Delivered** before opening **How was your meal?**.
+8. Open **Demo Dashboard** in the footer. The selected local order has an immutable item/total snapshot, a Sheets-style preview, and two generated message previews marked “not sent.”
+9. Submit one local review after the delivery simulation. The same order cannot receive duplicate feedback.
+10. Use **Reset demo** in the seller demo to remove only this project’s cart, customer draft, orders, and local reviews before recording another walkthrough.
 
-## Editable content
+## Demo boundaries
 
-- `src/data.js`: menu, categories, restaurant story, contact placeholders, sample reviews, and images.
-- `src/domain.js`: delivery pricing, validation, order snapshot creation, sample customer, and message templates.
-- `src/main.jsx`: page components and interaction state.
-- `src/styles.css`: palette, typography, spacing, and responsive breakpoints.
-- `public/assets/`: locally hosted brand and food images.
-- `public/fonts/`: locally hosted Google Fonts and licenses.
-- `docs/BRAND-RESEARCH.md`: sources and verified/placeholder boundaries.
+This is intentionally a **frontend-only, browser-local demonstration**.
 
-## Demo behaviour
+- No real payment gateway, card collection, payable UPI QR, order acceptance, Google Sheet, WhatsApp, SMS, database, or outbound notification exists.
+- Cart, customer draft, orders, and reviews use the browser-local `kdd-demo-v1` storage key. They persist after refresh in the same browser only.
+- Payment, fulfilment, message, and review states are intentionally separate. A paid simulation does not mean a restaurant accepted an order; COD can be fulfilled while payment remains pending.
+- Menu prices, food descriptions, delivery estimates, testimonials, history, and visit details are demonstration content until the owner verifies them.
 
-Cart, customer draft, orders, and submitted reviews are saved under the localStorage key `kdd-demo-v1`. Order items, customer details, totals, payment state, and timestamp are captured together when placing an order. Both WhatsApp previews and the spreadsheet table read that same snapshot. The checkout has a synchronous submission lock and order-ID deduplication.
+## Configuration and content
 
-Delivery is ₹40 below ₹799 and free from ₹799. Displayed prices are illustrative and include demo taxes. Phone numbers must contain ten digits starting with 6–9; pincodes must contain six digits starting with 1–9. Optional phone/email fields are validated when entered.
+| File | Replace or adjust |
+| --- | --- |
+| [`src/data.js`](src/data.js) | Restaurant content, visit verification state, gallery source notes, menu, categories, sample reviews, and local image references. |
+| [`src/domain.js`](src/domain.js) | Delivery threshold/fee, demo serviceability pincodes, customer validation, snapshots, order IDs, and generated message text. |
+| [`src/main.jsx`](src/main.jsx) | Routes, page components, checkout simulation, cart interactions, confirmation, reviews, and seller demo UI. |
+| [`src/styles.css`](src/styles.css) | Shared colour tokens, typography, layout, components, responsive rules, and reduced-motion behaviour. |
+| [`public/assets`](public/assets) | Local logo and food imagery used in the live demo. |
+| [`docs/media`](docs/media) | Client walkthrough video and README screenshots. |
 
-All orders, payments, delivery estimates, spreadsheet records, and WhatsApp messages are simulations. No real payment inputs, payable UPI QR codes, outbound notifications, or backend calls exist. Contact details, sample prices, extended history copy, and testimonials need restaurant verification before production use. Supplied food photos are illustrative; dish identification is not asserted as a verified menu.
+## Owner-verification checklist
 
-## Validation
+Before publishing the demo as a live restaurant site, confirm or replace:
 
-`npm test` covers pricing boundaries, required and optional customer validation, immutable order snapshots, and consistency of payment/message data. Browser QA covers the complete UPI, card, and COD journey, failed payment retry, duplicate clicks, review persistence, menu filters, cart operations, dashboard reset, and responsive layouts. See `docs/QA.md` for the verification record.
+- Exact Amritsar address, opening hours, telephone number, directions URL, and business WhatsApp link.
+- Restaurant history, founding-year claim, team details, owner quote, and review copy.
+- Production menu, pricing, modifiers, allergens, delivery areas, taxes, and any pickup policy.
+- Authorised food, kitchen, team, seating, front-signboard, and plated-dish photography.
+- Any video/reel rights, links, watermark-removal permission, and social-media usage approval.
 
-Photo and font credits are included in `public/credits.html`. Original supplied assets are preserved in `locally available image assests/`.
+Asset provenance and font licences are documented in [`public/credits.html`](public/credits.html) and [`docs/BRAND-RESEARCH.md`](docs/BRAND-RESEARCH.md).
+
+## Verification
+
+`npm test` covers delivery thresholds, input validation, immutable order snapshots, and message/payment consistency. The interface also includes visible keyboard focus, reduced-motion rules, labelled controls, cart focus management, validation focus, responsive menu rows, an accessible gallery lightbox, and local reset confirmation.
+
+For the fuller browser QA record and known demo limits, see [`docs/QA.md`](docs/QA.md).
